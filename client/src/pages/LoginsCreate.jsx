@@ -13,13 +13,16 @@ const Wrapper = styled.div.attrs({
 `
 
 const Label = styled.label`
+    display: inline-block;
     margin: 5px;
+    font-size: 24px;
 `
 
 const InputText = styled.input.attrs({
     className: 'form-control',
 })`
     margin: 5px;
+    width: 800px;
 `
 
 const Button = styled.button.attrs({
@@ -51,7 +54,9 @@ class LoginsCreate extends Component {
         const pw = 'testpw'
         const payload = { url, pw }
 
-        await api.putLogin(payload).then(res => {
+        console.log(payload)
+
+        await api.postLogin(payload).then(res => {
             window.alert('Login Information Successfully Created')
             this.setState({ url: ''})
         })
@@ -69,6 +74,7 @@ class LoginsCreate extends Component {
                 </Label>
                 <InputText
                     type="text"
+                    placeholder="e.g. http://google.com"
                     value={url}
                     onChange={this.handleChangeUrl}
                 />

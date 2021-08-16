@@ -40,6 +40,20 @@ createUrl = (req, res) => {
 
 } 
 
+deleteUrl = async (req, res) => {
+
+    await LoginInfo.deleteOne({ url: req.params.url }, (err, url) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        if (!url) {
+            return res.status(404).json({ success: false, error: 'Url not found' })
+        }
+        return res.status(200).json({success: true, data: url })
+    }).catch(err => console.log(err)) 
+}
+
+
 getUrls = async (req, res) => {
     
     await LoginInfo.find({}, (err, urls) => {
@@ -55,24 +69,16 @@ getUrls = async (req, res) => {
 }
 
 getPasswordByUrl = async (req, res) => {
-    const body = req.body
 
-    if (!body) {
-        return res.status(400).json({
-            success: false,
-            error: 'Cannot have blank url',
-        })
-    }
-
-
-    await LoginInfo.findOne({ url: body.url}, (err, url) => {
+    await LoginInfo.findOne({ url: req.params.url }, (err, logins) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
-        if (!url) {
+        if (!logins) {
             return res.status(404).json({ success: false, error: 'Url not found' })
         }
-        return res.status(200).json({success: true, data: url })
+        
+        return res.status(200).json({success: true, data: logins })
     }).catch(err => console.log(err))
     
 }
@@ -96,19 +102,6 @@ updatePassword = async (req, res) => {
         }
         return res.status(200).json({success: true, data: url })
     }).catch(err => console.log(err))
-}
-
-deleteUrl = async (req, res) => {
-
-    await LoginInfo.deleteOne({ url: req.params.url }, (err, url) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!url) {
-            return res.status(404).json({ success: false, error: 'Url not found' })
-        }
-        return res.status(200).json({success: true, data: url })
-    }).catch(err => console.log(err)) 
 }
 
 module.exports = {

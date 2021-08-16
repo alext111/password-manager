@@ -19,8 +19,8 @@ class DeleteLogin extends Component {
 
         if (window.confirm(`Do you want to delete ${this.props.url} login information?`,)) {
             console.log(this.props.url)
-            api.deleteLogin(this.props.url)
-            window.location.reload()
+            api.deleteLogin(this.props.url).then(window.location.reload())
+            
         }
     }
 
