@@ -75,6 +75,7 @@ getPasswordByUrl = async (req, res) => {
             return res.status(400).json({ success: false, error: err })
         }
         if (!logins) {
+            console.log(res)
             return res.status(404).json({ success: false, error: 'Url not found' })
         }
         
@@ -82,6 +83,10 @@ getPasswordByUrl = async (req, res) => {
     }).catch(err => console.log(err))
     
 }
+
+
+
+
 
 updatePassword = async (req, res) => {
     const body = req.body

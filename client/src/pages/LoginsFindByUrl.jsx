@@ -66,11 +66,9 @@ class LoginsFindByUrl extends Component {
 
         const logins = await api.getLoginByUrl(url)
         window.alert('Login Information Successfully Found')
-        console.log(logins)
         this.setState({ 
             pw: logins.data.data.pw,
         })
-        console.log(this.state)
 
     }
 

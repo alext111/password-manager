@@ -53,15 +53,23 @@ class LoginsCreate extends Component {
         const { url } = this.state
         const pw = 'testpw'
         const payload = { url, pw }
-
-        console.log(payload)
-
-        await api.postLogin(payload).then(res => {
-            window.alert('Login Information Successfully Created')
-            this.setState({ url: ''})
-        })
+        
+        try {
+            await api.getLoginByUrl(url).then(res => {
+                window.alert('Login Information Already Exists')
+                console.log(res.data)
+            })
+        }
+        catch {
+            api.postLogin(payload).then(res => {
+                window.alert('Login Information Successfully Created')
+                this.setState({ url: ''})
+        
+        
+                    })
+            }
     }
-
+    
     render() {
         const { url } = this.state
         return (
