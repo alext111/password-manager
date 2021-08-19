@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const mongopw = ""
+const mongopw = "iKsMXUcFL6K6BcAI"
 
 mongoose
     .connect(`mongodb+srv://pwmanager:${mongopw}@cluster0.thott.mongodb.net/pwDB?retryWrites=true&w=majority`, { useNewUrlParser: true})

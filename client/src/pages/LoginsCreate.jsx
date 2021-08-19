@@ -49,11 +49,12 @@ class LoginsCreate extends Component {
         this.setState({ url })
     }
 
+    //handle generate password button click
     handleGenerateLogins = async () => {
         const { url } = this.state
-        const pw = 'testpw'
-        const payload = { url, pw }
+        const payload = { url }
         
+        //check if login info already exists, else creates new login info
         try {
             await api.getLoginByUrl(url).then(res => {
                 window.alert('Login Information Already Exists')
@@ -64,9 +65,7 @@ class LoginsCreate extends Component {
             api.postLogin(payload).then(res => {
                 window.alert('Login Information Successfully Created')
                 this.setState({ url: ''})
-        
-        
-                    })
+                })
             }
     }
     

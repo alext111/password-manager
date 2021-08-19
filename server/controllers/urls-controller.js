@@ -1,17 +1,20 @@
 const LoginInfo = require('../models/urls-model')
+const passwordGenerator = require('../utils/pw-generator')
 
+//create login info from url
 createUrl = (req, res) => {
-    const body = req.body
-    console.log(body)
-
-    if (!body) {
+    const url = req.body.url
+    
+    if (!url) {
         return res.status(400).json({
             success: false,
             error: 'Cannot have blank url',
         })
     }
 
-    const loginInfo = new LoginInfo(body)
+    const password = passwordGenerator.generatePassword()
+    const loginInfo = new LoginInfo({ url: url, pw: password })
+    console.log(password)
     console.log(loginInfo)
     
     if (!loginInfo) {
@@ -40,6 +43,7 @@ createUrl = (req, res) => {
 
 } 
 
+//delete login info from url
 deleteUrl = async (req, res) => {
 
     await LoginInfo.deleteOne({ url: req.params.url }, (err, url) => {
@@ -53,7 +57,7 @@ deleteUrl = async (req, res) => {
     }).catch(err => console.log(err)) 
 }
 
-
+//get all login info in database
 getUrls = async (req, res) => {
     
     await LoginInfo.find({}, (err, urls) => {
@@ -68,6 +72,7 @@ getUrls = async (req, res) => {
 
 }
 
+//get password for url
 getPasswordByUrl = async (req, res) => {
 
     await LoginInfo.findOne({ url: req.params.url }, (err, logins) => {
@@ -84,10 +89,7 @@ getPasswordByUrl = async (req, res) => {
     
 }
 
-
-
-
-
+//update password for url
 updatePassword = async (req, res) => {
     const body = req.body
 
