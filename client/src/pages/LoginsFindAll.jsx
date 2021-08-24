@@ -9,17 +9,38 @@ const Wrapper = styled.div`
     padding: 0 20px 20px 20px;
 `
 
+const Decrypt = styled.div`
+    cursor: pointer;
+`
+
 const Delete = styled.div`
     cursor: pointer;
 `
 
+//decrypt password and show user in window prompt
+class DecryptPassword extends Component {
+    decryptPassword = async () => {
+        const pw = this.props.pw
+        const iv = this.props.iv
+        await api.decryptPassword(pw, iv).then(res => {
+            window.alert(`${res.data.data}`)
+        })
+    }
+
+    render () {
+        return <Decrypt onClick={this.decryptPassword}>Show Password</Decrypt>
+    }
+}
+
+//prompt user to delete login info for one website
 class DeleteLogin extends Component {
     deleteLogin = async () => {
 
         if (window.confirm(`Do you want to delete ${this.props.url} login information?`,)) {
-            console.log(this.props.url)
 
-            await api.deleteLogin(this.props.url).then(window.location.reload())
+            await api.deleteLogin(this.props.url).then(res => {
+                window.location.reload()
+            })
             
         }
     }
@@ -39,7 +60,6 @@ class LoginsFindAll extends Component {
         }
     }
 
-    
     componentDidMount = async () => {
         this.setState({ isLoading: true })
 
@@ -51,7 +71,6 @@ class LoginsFindAll extends Component {
         })
     }
     
-
     render() {
         const { logins, isLoading } = this.state
         console.log('TCL: LoginsList -> render -> logins', logins)
@@ -63,7 +82,7 @@ class LoginsFindAll extends Component {
                 filterable: true,
             },
             {
-                Header: 'Password',
+                Header: 'Encrypted Password',
                 accessor: 'pw',
                 filterable: true,
             },
@@ -71,6 +90,17 @@ class LoginsFindAll extends Component {
                 Header: 'Last Updated',
                 accessor: 'updatedAt',
                 filterable: true,
+            },
+            {
+                Header: '',
+                accessor: '',
+                Cell: function(props) {
+                    return (
+                        <span>
+                            <DecryptPassword url={props.original.url} pw={props.original.pw} iv={props.original.iv} />
+                        </span>
+                    )
+                }
             },
             {
                 Header: '',
@@ -106,7 +136,5 @@ class LoginsFindAll extends Component {
         )
     }
 }
-
-
 
 export default LoginsFindAll

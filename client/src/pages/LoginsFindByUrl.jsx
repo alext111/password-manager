@@ -60,14 +60,12 @@ class LoginsFindByUrl extends Component {
     }
 
     handleFindPassword = async () => {
-        console.log(this.state)
-
         const url = this.state.url
-
         const logins = await api.getLoginByUrl(url)
-        window.alert('Login Information Successfully Found')
+        const password = await api.decryptPassword(logins.data.data.pw, logins.data.data.iv)
+        window.alert('Login information successfully found')
         this.setState({ 
-            pw: logins.data.data.pw,
+            pw: password.data.data,
         })
 
     }
@@ -82,7 +80,7 @@ class LoginsFindByUrl extends Component {
                     Find Password
                 </Title>
                 <Label>
-                    Url
+                    Url/Website
                 </Label>
                 <InputText
                     type="text"

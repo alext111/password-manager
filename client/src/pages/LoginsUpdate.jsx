@@ -37,6 +37,7 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
+//update password for one website with user chosen password
 class LoginsUpdate extends Component {
     
     constructor(props) {
@@ -58,10 +59,8 @@ class LoginsUpdate extends Component {
         const { url, pw } = this.state
         const payload = { url, pw }
 
-        console.log(payload)
-
         await api.updateLogin(url, payload).then(res => {
-            window.alert('Login Information Successfully Changed')
+            window.alert('Password successfully changed and encrypted.')
             this.setState({ url: '', pw: ''})
         })
     }
@@ -74,7 +73,7 @@ class LoginsUpdate extends Component {
                     Change Password
                 </Title>
                 <Label>
-                    Url
+                    Url/Website
                 </Label>
                 <InputText
                     type="text"

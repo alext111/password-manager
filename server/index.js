@@ -1,5 +1,4 @@
 const express = require('express');
-//const cors = require('cors');
 const app = express();
 const db = require('./db')
 const urlRouter = require('./routes/urls-route')
@@ -7,7 +6,6 @@ const apiPort = 3001;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//app.use(cors);
 
 db.on('error', console.error.bind(console, 'MongoDB Connection Error'))
 

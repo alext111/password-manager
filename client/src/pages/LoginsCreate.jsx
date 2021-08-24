@@ -37,6 +37,7 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
+//generate and encrypt password for new website
 class LoginsCreate extends Component {
     
     constructor(props) {
@@ -53,17 +54,16 @@ class LoginsCreate extends Component {
     handleGenerateLogins = async () => {
         const { url } = this.state
         const payload = { url }
-        
+
         //check if login info already exists, else creates new login info
         try {
             await api.getLoginByUrl(url).then(res => {
-                window.alert('Login Information Already Exists')
-                console.log(res.data)
+                window.alert('Login information already exists')
             })
         }
         catch {
             api.postLogin(payload).then(res => {
-                window.alert('Login Information Successfully Created')
+                window.alert('Login information successfully created')
                 this.setState({ url: ''})
                 })
             }
@@ -77,7 +77,7 @@ class LoginsCreate extends Component {
                     Create Password
                 </Title>
                 <Label>
-                    Url
+                    Url/Website
                 </Label>
                 <InputText
                     type="text"

@@ -7,15 +7,16 @@ import { LoginsCreate, LoginsFindByUrl, LoginsFindAll, LoginsUpdate } from '../p
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+//homepage
 function App() {
   return (
     <Router>
       <NavBar/>
       <Switch>
-        <Route path="/url/create" exact component={LoginsCreate} />
-        <Route path="/url/find/" exact component={LoginsFindByUrl} />
-        <Route path="/urls/all" exact component={LoginsFindAll} />
-        <Route path="/url/update/" exact component={LoginsUpdate} />
+        <Route path="/login/create" exact component={LoginsCreate} />
+        <Route path="/login/find/" exact component={LoginsFindByUrl} />
+        <Route path="/logins/all" exact component={LoginsFindAll} />
+        <Route path="/login/update/" exact component={LoginsUpdate} />
       </Switch>
     </Router>
   )

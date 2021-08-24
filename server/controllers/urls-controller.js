@@ -1,5 +1,6 @@
 const LoginInfo = require('../models/urls-model')
 const passwordGenerator = require('../utils/pw-generator')
+const encryptor = require('../utils/pw-encryption')
 
 //create login info from url
 createUrl = (req, res) => {
@@ -13,9 +14,8 @@ createUrl = (req, res) => {
     }
 
     const password = passwordGenerator.generatePassword()
-    const loginInfo = new LoginInfo({ url: url, pw: password })
-    console.log(password)
-    console.log(loginInfo)
+    const encrypted = encryptor.encrypt(password)
+    const loginInfo = new LoginInfo({ url: url, pw: encrypted.pw, iv: encrypted.iv })
     
     if (!loginInfo) {
         return res.status(400).json({
@@ -43,9 +43,26 @@ createUrl = (req, res) => {
 
 } 
 
+//decrypt password using utils
+decryptPassword = async (req, res) => {
+    const encryption = { pw: req.params.pw, iv: req.params.iv }
+    const decryptedPassword = encryptor.decrypt(encryption)
+
+    if (!decryptedPassword) {
+        return res.status(400).json({
+            success: false,
+            error: err,
+        })
+    }
+    
+    return res.status(200).json({
+        success: true, 
+        data: decryptedPassword
+    })
+}
+
 //delete login info from url
 deleteUrl = async (req, res) => {
-
     await LoginInfo.deleteOne({ url: req.params.url }, (err, url) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
@@ -96,11 +113,15 @@ updatePassword = async (req, res) => {
     if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'Cannot have blank url',
+            error: 'Cannot have blank info',
         })
     }
 
-    await LoginInfo.updateOne({ url: body.url}, { pw: body.pw}, (err, url) => {
+    //encrypt user inputted password and save encrypted password and new iv
+    const password = body.pw
+    const encrypted = encryptor.encrypt(password)
+
+    await LoginInfo.updateOne({ url: body.url}, { pw: encrypted.pw, iv: encrypted.iv}, (err, url) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
@@ -113,6 +134,7 @@ updatePassword = async (req, res) => {
 
 module.exports = {
     createUrl,
+    decryptPassword,
     getUrls,
     getPasswordByUrl,
     updatePassword,

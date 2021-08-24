@@ -24,22 +24,22 @@ class Links extends Component {
                 <Collapse>
                     <List>
                         <Item>
-                            <Link to="/url/create" className="nav-link">
+                            <Link to="/login/create" className="nav-link">
                                 Create Password
                             </Link>
                         </Item>
                         <Item>
-                            <Link to="/url/find" className="nav-link">
+                            <Link to="/login/find" className="nav-link">
                                 Find Password By Url
                             </Link>
                         </Item>
                         <Item>
-                            <Link to="/urls/all" className="nav-link">
+                            <Link to="/logins/all" className="nav-link">
                                 Find All Logins
                             </Link>
                         </Item>
                         <Item>
-                            <Link to="/url/update" className="nav-link">
+                            <Link to="/login/update" className="nav-link">
                                 Update Password
                             </Link>
                         </Item>
