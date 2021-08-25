@@ -9,7 +9,8 @@
 ## Dependencies
  The app requires the following: React, axios, mongoose, express, body-parser, styled-components, react-router-dom, react-table-6, bootstrap.
  
- ## Live Demo
-  ![password-manager](https://user-images.githubusercontent.com/49249379/130694336-1932f356-54e1-4216-8b05-2eb44e6aadba.gif)
+## Live Demo
+![password-manager](https://user-images.githubusercontent.com/49249379/130858917-4cdde4bc-e331-46f1-961d-46cfc5a56032.gif)
+
 
   
