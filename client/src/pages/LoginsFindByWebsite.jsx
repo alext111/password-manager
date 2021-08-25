@@ -45,23 +45,23 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
-class LoginsFindByUrl extends Component {
+class LoginsFindByWebsite extends Component {
     constructor(props) {
         super(props)
         this.state = { 
-            url: '', 
+            website: '', 
             pw: '', 
         }
     }
 
-    handleChangeUrl = async event => {
-        const url = event.target.value
-        this.setState({ url })
+    handleChangeWebsite = async event => {
+        const website = event.target.value
+        this.setState({ website })
     }
 
     handleFindPassword = async () => {
-        const url = this.state.url
-        const logins = await api.getLoginByUrl(url)
+        const website = this.state.website
+        const logins = await api.getLoginByWebsite(website)
         const password = await api.decryptPassword(logins.data.data.pw, logins.data.data.iv)
         window.alert('Login information successfully found')
         this.setState({ 
@@ -70,23 +70,21 @@ class LoginsFindByUrl extends Component {
 
     }
 
-    
-
     render() {
-        const { url, pw } = this.state
+        const { website, pw } = this.state
         return (
             <Wrapper>
                 <Title>
                     Find Password
                 </Title>
                 <Label>
-                    Url/Website
+                    Website
                 </Label>
                 <InputText
                     type="text"
-                    placeholder="e.g. http://google.com"
-                    value={url}
-                    onChange={this.handleChangeUrl}
+                    placeholder="e.g. Google"
+                    value={website}
+                    onChange={this.handleChangeWebsite}
                 />
 
                 <Label>
@@ -101,7 +99,7 @@ class LoginsFindByUrl extends Component {
                 <Button onClick={this.handleFindPassword}>
                     Find Password
                 </Button>
-                <CancelButton href={'/urls/all'}>
+                <CancelButton href={'/logins/all'}>
                     Cancel
                 </CancelButton>
             </Wrapper>
@@ -109,4 +107,4 @@ class LoginsFindByUrl extends Component {
     }
 }
 
-export default LoginsFindByUrl
+export default LoginsFindByWebsite

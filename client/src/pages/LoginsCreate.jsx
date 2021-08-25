@@ -42,53 +42,53 @@ class LoginsCreate extends Component {
     
     constructor(props) {
         super(props)
-        this.state = { url: '' }
+        this.state = { website: '' }
     }
 
-    handleChangeUrl = async event => {
-        const url = event.target.value
-        this.setState({ url })
+    handleChangeWebsite = async event => {
+        const website = event.target.value
+        this.setState({ website })
     }
 
     //handle generate password button click
     handleGenerateLogins = async () => {
-        const { url } = this.state
-        const payload = { url }
+        const { website } = this.state
+        const payload = { website }
 
         //check if login info already exists, else creates new login info
         try {
-            await api.getLoginByUrl(url).then(res => {
+            await api.getLoginByUrl(website).then(res => {
                 window.alert('Login information already exists')
             })
         }
         catch {
             api.postLogin(payload).then(res => {
                 window.alert('Login information successfully created')
-                this.setState({ url: ''})
+                this.setState({ website: ''})
                 })
             }
     }
     
     render() {
-        const { url } = this.state
+        const { website } = this.state
         return (
             <Wrapper>
                 <Title>
                     Create Password
                 </Title>
                 <Label>
-                    Url/Website
+                    Website
                 </Label>
                 <InputText
                     type="text"
-                    placeholder="e.g. http://google.com"
-                    value={url}
-                    onChange={this.handleChangeUrl}
+                    placeholder="e.g. Google"
+                    value={website}
+                    onChange={this.handleChangeWebsite}
                 />
                 <Button onClick={this.handleGenerateLogins}>
                     Generate Password
                 </Button>
-                <CancelButton href={'/urls/all'}>
+                <CancelButton href={'/logins/all'}>
                     Cancel
                 </CancelButton>
             </Wrapper>

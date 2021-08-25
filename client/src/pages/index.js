@@ -1,6 +1,6 @@
 import LoginsCreate from "./LoginsCreate"
-import LoginsFindByUrl from "./LoginsFindByUrl"
+import LoginsFindByWebsite from "./LoginsFindByWebsite"
 import LoginsFindAll from "./LoginsFindAll"
 import LoginsUpdate from "./LoginsUpdate"
 
-export { LoginsCreate, LoginsFindByUrl, LoginsFindAll, LoginsUpdate }
+export { LoginsCreate, LoginsFindByWebsite, LoginsFindAll, LoginsUpdate }

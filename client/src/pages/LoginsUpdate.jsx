@@ -42,12 +42,12 @@ class LoginsUpdate extends Component {
     
     constructor(props) {
         super(props)
-        this.state = { url: '', pw: '' }
+        this.state = { website: '', pw: '' }
     }
 
-    handleChangeUrl = async event => {
-        const url = event.target.value
-        this.setState({ url })
+    handleChangeWebsite = async event => {
+        const website = event.target.value
+        this.setState({ website })
     }
 
     handleChangePassword = async event => {
@@ -56,30 +56,30 @@ class LoginsUpdate extends Component {
     }
 
     handleUpdatePassword = async () => {
-        const { url, pw } = this.state
-        const payload = { url, pw }
+        const { website, pw } = this.state
+        const payload = { website, pw }
 
-        await api.updateLogin(url, payload).then(res => {
+        await api.updateLogin(website, payload).then(res => {
             window.alert('Password successfully changed and encrypted.')
-            this.setState({ url: '', pw: ''})
+            this.setState({ website: '', pw: ''})
         })
     }
 
     render() {
-        const { url, pw } = this.state
+        const { website, pw } = this.state
         return (
             <Wrapper>
                 <Title>
                     Change Password
                 </Title>
                 <Label>
-                    Url/Website
+                    Website
                 </Label>
                 <InputText
                     type="text"
-                    placeholder="e.g. http://google.com"
-                    value={url}
-                    onChange={this.handleChangeUrl}
+                    placeholder="e.g. Google"
+                    value={website}
+                    onChange={this.handleChangeWebsite}
                 />
 
                 <Label>
@@ -95,7 +95,7 @@ class LoginsUpdate extends Component {
                 <Button onClick={this.handleUpdatePassword}>
                     Update Password
                 </Button>
-                <CancelButton href={'/urls/all'}>
+                <CancelButton href={'/logins/all'}>
                     Cancel
                 </CancelButton>
             </Wrapper>

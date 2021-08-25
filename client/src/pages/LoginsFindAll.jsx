@@ -36,9 +36,9 @@ class DecryptPassword extends Component {
 class DeleteLogin extends Component {
     deleteLogin = async () => {
 
-        if (window.confirm(`Do you want to delete ${this.props.url} login information?`,)) {
+        if (window.confirm(`Do you want to delete ${this.props.website} login information?`,)) {
 
-            await api.deleteLogin(this.props.url).then(res => {
+            await api.deleteLogin(this.props.website).then(res => {
                 window.location.reload()
             })
             
@@ -77,8 +77,8 @@ class LoginsFindAll extends Component {
         
         const columns = [
             {
-                Header: 'Url',
-                accessor: 'url',
+                Header: 'Website',
+                accessor: 'website',
                 filterable: true,
             },
             {
@@ -97,7 +97,7 @@ class LoginsFindAll extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <DecryptPassword url={props.original.url} pw={props.original.pw} iv={props.original.iv} />
+                            <DecryptPassword website={props.original.website} pw={props.original.pw} iv={props.original.iv} />
                         </span>
                     )
                 }
@@ -108,7 +108,7 @@ class LoginsFindAll extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <DeleteLogin url={props.original.url} />
+                            <DeleteLogin website={props.original.website} />
                         </span>
                     )
                 }
