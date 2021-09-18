@@ -1,8 +1,11 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
+require('dotenv').config()
 const db = require('./db')
 const urlRouter = require('./routes/urls-route')
-const apiPort = 3001;
+const apiPort = process.env.PORT || 3001
+
+console.log(process.env.PORT)
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
