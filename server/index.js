@@ -9,6 +9,7 @@ console.log(process.env.PORT)
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('build'))
 
 db.on('error', console.error.bind(console, 'MongoDB Connection Error'))
 

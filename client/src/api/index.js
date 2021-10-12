@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:3001/api'
+    baseURL: '/api'
 })
-
+ 
 //routes for api
 export const postLogin = payload => api.post(`/login/`, payload)
 export const getLogins = () => api.get(`/logins/`)
