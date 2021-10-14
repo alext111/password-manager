@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-const mongouri = process.env.mongouri
+const config = require('../utils/config')
 
-console.log(mongouri)
+console.log(config.mongouri)
 
 //connection to mongodb
 mongoose
-    .connect(mongouri, { useNewUrlParser: true})
+    .connect(config.mongouri, { useNewUrlParser: true})
     .catch(e => {
         console.error('Connection Error', e.message)
     })
