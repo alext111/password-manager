@@ -57,7 +57,7 @@ class LoginsCreate extends Component {
 
         //check if login info already exists, else creates new login info
         try {
-            await api.getLoginByUrl(website).then(res => {
+            await api.getLoginByWebsite(website).then(res => {
                 window.alert('Login information already exists')
             })
         }
