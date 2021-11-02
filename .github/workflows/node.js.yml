@@ -20,8 +20,9 @@ jobs:
       with:
         node-version: 14.x
         cache: 'npm'
-        env: ${{ secrets.mongouri }}
     - name: npm install        
       run: npm install
     - name: npm test
       run: npm test
+      env: 
+        mongouri: ${{ secrets.mongouri }}
