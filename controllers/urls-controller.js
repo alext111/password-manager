@@ -63,6 +63,7 @@ decryptPassword = async (req, res) => {
 
 //delete login info from website
 deleteLogins = async (req, res) => {
+
     await LoginInfo.deleteOne({ website: req.params.website }, (err, website) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
