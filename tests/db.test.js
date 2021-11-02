@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const app = require('../index')
+const app = require('../app')
 const helper = require('./test-helper')
 const loginModel = require('../models/logins-model')
 const passwordGenerator = require('../utils/pw-generator')
