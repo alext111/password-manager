@@ -8,6 +8,9 @@ on:
     branches: [ backend ]
   pull_request:
     branches: [ backend ]
+    
+env: 
+  mongouri: ${{ secrets.mongouri }}
 
 jobs:
   build:
@@ -24,5 +27,4 @@ jobs:
       run: npm install
     - name: npm test
       run: npm test
-      env: 
-        mongouri: ${{ secrets.mongouri }}
+      
