@@ -8,11 +8,14 @@ on:
     branches: [ backend ]
   pull_request:
     branches: [ backend ]
+    
+env: 
+  mongouri: ${{ secrets.mongouri }}
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -24,5 +27,4 @@ jobs:
       run: npm install
     - name: npm test
       run: npm test
-      env: 
-        mongouri: ${{ secrets.mongouri }}
+      
