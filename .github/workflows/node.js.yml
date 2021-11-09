@@ -8,6 +8,7 @@ on:
     branches: [ backend ]
   pull_request:
     branches: [ backend ]
+    types: [opened, synchronize]
     
 env: 
   mongouri: ${{ secrets.mongouri }}
