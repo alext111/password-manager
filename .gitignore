@@ -4,3 +4,5 @@ client/node_modules
 server/db/index.js
 node_modules
 .env
+Dockerfile
+docker-compose.yml
