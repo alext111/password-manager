@@ -2,3 +2,5 @@
 node_modules
 db/index.js
 .env
+Dockerfile
+docker-compose.yml
