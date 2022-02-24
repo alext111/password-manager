@@ -17,12 +17,12 @@ app.use(function(req, res, next) {
 })
 
 // Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, '../client/build')))
+app.use(express.static(path.join(__dirname, './client/build')))
 
 app.use('/api', urlRouter)
 
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/../client/build/index.html'))
+    res.sendFile(path.join(__dirname, './client/build/index.html'))
   })
 
 module.exports = app
