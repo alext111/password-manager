@@ -4,3 +4,4 @@ db/index.js
 .env
 Dockerfile
 docker-compose.yml
+client/build
