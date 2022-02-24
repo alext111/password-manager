@@ -79,6 +79,7 @@ deleteLogins = async (req, res) => {
 getLogins = async (req, res) => {
     
     await LoginInfo.find({}, (err, websites) => {
+        console.log(res)
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }

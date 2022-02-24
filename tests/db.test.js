@@ -9,10 +9,10 @@ const api = supertest(app)
 
 describe('Database contains preexisting documents', () => {
 	test('Documents are returned in json format', async () => {
-		await api
-			.get('/api/logins')
-			.expect(200)
-			.expect('Content-Type', /application\/json/)
+		const response = await api.get('/api/logins')
+		
+		expect(response.status).toBe(200)
+		expect(response.type).toBe('application/json')
 	})
   
 	test('There are two documents', async () => {
