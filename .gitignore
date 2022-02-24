@@ -5,3 +5,4 @@ db/index.js
 Dockerfile
 docker-compose.yml
 client/build
+package-lock.json
