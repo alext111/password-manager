@@ -1,0 +1,319 @@
+{
+  "id": "a1b13fbe-542e-441f-a296-3054f788d3bd",
+  "version": "2.0",
+  "name": "pwmanager",
+  "url": "https://sleepy-reaches-31980.herokuapp.com",
+  "tests": [{
+    "id": "18f5e03f-45dc-4e60-87f6-6abe530b5faf",
+    "name": "pw-routine",
+    "commands": [{
+      "id": "f966f54c-0a77-48c4-918f-1e3ed80c7d8b",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "63470188-0a20-4820-853a-c4f03d0eb469",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1056",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f152a2be-c352-438a-a3bd-31534cf9e2ff",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Create Password",
+      "targets": [
+        ["linkText=Create Password", "linkText"],
+        ["css=.sc-dlnjwi:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Create Password')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/nav/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login/create')]", "xpath:href"],
+        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Create Password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7c6c6d5a-ea3b-42ab-81b5-f4651aa9d0c6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-fujyAs",
+      "targets": [
+        ["css=.sc-fujyAs", "css:finder"],
+        ["xpath=//input[@value='']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9b164c25-3611-4f27-b37c-27908660c359",
+      "comment": "",
+      "command": "type",
+      "target": "css=.sc-fujyAs",
+      "targets": [
+        ["css=.sc-fujyAs", "css:finder"],
+        ["xpath=//input[@value='TestWebsite']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "TestWebsite"
+    }, {
+      "id": "46423ea1-d548-4831-866f-71be4f505c3a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-pNWdM",
+      "targets": [
+        ["css=.sc-pNWdM", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Generate Password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "56d078b5-34f9-4a0f-acb3-932055083521",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Login information successfully created",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "bba2fc0e-cb70-475f-996e-f4688b53372b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Find All Logins",
+      "targets": [
+        ["linkText=Find All Logins", "linkText"],
+        ["css=.sc-dlnjwi:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Find All Logins')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/nav/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logins/all')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Find All Logins')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cdf2ba45-208f-4da1-bdbe-676b747c7df9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.rt-tr-group:nth-child(3) .sc-fFSPTT",
+      "targets": [
+        ["css=.rt-tr-group:nth-child(3) .sc-fFSPTT", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[3]/div[3]/div/div[4]/span/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[4]/span/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7af54849-2f0f-41d0-9209-8896ffa9cbb4",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Lh2/Sl4/Nz3=Yo7!Rl4#",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fbe34610-5dde-479d-a0de-2b83e53257da",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Find Password By Url",
+      "targets": [
+        ["linkText=Find Password By Url", "linkText"],
+        ["css=.sc-dlnjwi:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Find Password By Url')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/nav/div/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login/find')]", "xpath:href"],
+        ["xpath=//div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Find Password By Url')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "25a10d55-bd3b-4475-94f2-3c966129981f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-dIsUp",
+      "targets": [
+        ["css=.sc-dIsUp", "css:finder"],
+        ["xpath=//input[@value='']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0a6ec73d-c6dc-43ea-bdf7-835bbfd603dc",
+      "comment": "",
+      "command": "type",
+      "target": "css=.sc-dIsUp",
+      "targets": [
+        ["css=.sc-dIsUp", "css:finder"],
+        ["xpath=//input[@value='TestWebsite']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "TestWebsite"
+    }, {
+      "id": "cd2976f8-d7cd-4138-aca4-68d11b8f0922",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-ksluID",
+      "targets": [
+        ["css=.sc-ksluID", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4e6dd581-886c-42a2-a358-4852308f5b5e",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Login information successfully found",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ccbbfe4e-b60b-4b02-b671-b0abd9ab5596",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Update Password",
+      "targets": [
+        ["linkText=Update Password", "linkText"],
+        ["css=.sc-dlnjwi:nth-child(4) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Update Password')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/nav/div/div/div[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login/update')]", "xpath:href"],
+        ["xpath=//div[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Update Password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9f8d9e69-4f49-42e4-aef9-3320156040b6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-dlMDgC:nth-child(3)",
+      "targets": [
+        ["css=.sc-dlMDgC:nth-child(3)", "css:finder"],
+        ["xpath=//input[@value='']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c19173fd-2652-481f-bfb4-10c3bac6d745",
+      "comment": "",
+      "command": "type",
+      "target": "css=.sc-dlMDgC:nth-child(3)",
+      "targets": [
+        ["css=.sc-dlMDgC:nth-child(3)", "css:finder"],
+        ["xpath=//input[@value='TestWebsite']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "TestWebsite"
+    }, {
+      "id": "5c33930e-5b28-43d8-902d-cc1ca769967d",
+      "comment": "",
+      "command": "type",
+      "target": "css=.sc-dlMDgC:nth-child(5)",
+      "targets": [
+        ["css=.sc-dlMDgC:nth-child(5)", "css:finder"],
+        ["xpath=//input[@value='NewPassword']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/input[2]", "xpath:idRelative"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "NewPassword"
+    }, {
+      "id": "5b77bf90-e00c-4f7e-9105-8d4e0953fa8c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-kfYoZR",
+      "targets": [
+        ["css=.sc-kfYoZR", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Update Password')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "40715dbd-43d9-49bb-a67d-882747699884",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Password successfully changed and encrypted.",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "eebe7bcb-aaab-43c7-b88e-5b07b5f44a8b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Find All Logins",
+      "targets": [
+        ["linkText=Find All Logins", "linkText"],
+        ["css=.sc-dlnjwi:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Find All Logins')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/nav/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logins/all')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Find All Logins')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1e66c576-8d71-45ad-b269-250c2a44266d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.rt-tr-group:nth-child(3) .sc-fFSPTT",
+      "targets": [
+        ["css=.rt-tr-group:nth-child(3) .sc-fFSPTT", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[3]/div[3]/div/div[4]/span/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[4]/span/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dbeb3b5c-e3b0-49e5-8f4d-b8bab0ee982c",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "NewPassword",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9c27f3a5-2543-4976-8bd6-308821a75237",
+      "comment": "",
+      "command": "chooseOkOnNextConfirmation",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9c18e327-796e-417a-8ce1-ca1d223aef72",
+      "comment": "",
+      "command": "click",
+      "target": "css=.rt-tr-group:nth-child(3) .sc-bkbkJK",
+      "targets": [
+        ["css=.rt-tr-group:nth-child(3) .sc-bkbkJK", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[3]/div[3]/div/div[5]/span/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div[5]/span/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fe3e3a54-099b-4440-a027-6cf1b11371cd",
+      "comment": "",
+      "command": "assertConfirmation",
+      "target": "Do you want to delete TestWebsite login information?",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7a3f48f3-4259-4f87-94b6-828ca76923e6",
+      "comment": "",
+      "command": "webdriverChooseOkOnVisibleConfirmation",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "38bc6a54-c8b1-42fb-98c1-3e9a61dcfcd2",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["18f5e03f-45dc-4e60-87f6-6abe530b5faf"]
+  }],
+  "urls": ["https://sleepy-reaches-31980.herokuapp.com/"],
+  "plugins": []
+}

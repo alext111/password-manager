@@ -19,7 +19,8 @@
     "express": "^4.17.1",
     "mongodb": "^4.0.1",
     "mongoose": "^5.13.5",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "selenium-webdriver": "^4.1.2"
   },
   "engines": {
     "node": "14.17.3"
