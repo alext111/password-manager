@@ -6,9 +6,6 @@
 ## How to use
  The app requires a MongoDB server which can be downloaded at https://www.mongodb.com/try/download/community. The server connection should be inserted into \server\db\index.js. The server can be started using node index.js in \server\ and the client can be started using npm start in \client\. A cors addon may be needed in your browser.
  
-## Heroku
- The app can be interacted with through heroku at https://sleepy-reaches-31980.herokuapp.com/
- 
 ## Dependencies
  The app requires the following: react, axios, mongoose, express, body-parser, styled-components, react-router-dom, react-table-6, bootstrap.
  
