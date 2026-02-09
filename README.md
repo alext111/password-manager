@@ -1,8 +1,37 @@
 # Password Manager
 
+This repository contains a **password manager application** built using the MERN stack (MongoDB, Express, React, Node.js).
+
+---
+
+## ⚠️ Disclaimer
+
+This application is **not a production-ready password manager** and should **not be used to store real or sensitive credentials**.
+
+It exists solely to showcase:
+- Full-stack JavaScript development
+- Secure handling concepts
+- Clean project structure and maintainability
+- Testing and CI fundamentals
+
 ## Description
- App allows for user to generate and manage passwords that are encrypted and stored into MongoDB. Passwords are encrypted using AES encryption which can be manually chosen by the user if desired. The web app uses a MERN stack with MongoDB, Express, React, and Node.js.
+ This application allows for users to generate and manage passwords that are encrypted and stored into MongoDB. Passwords are encrypted using AES encryption which can be manually chosen by the user if desired.
+
+### Frontend
+- Built with React
+- Handles UI, form input, and client-side logic
+- Communicates with the backend via HTTP API calls
+
+### Backend
+- Built with Node.js and Express
+- Exposes REST API endpoints
+- Handles password generation, encryption, and decryption
+- Uses MongoDB for data storage
+- Includes automated tests using Jest
  
+### 🧪 Testing
+Backend tests are located in the `server/tests` directory
+
 ## How to use
  The app requires a MongoDB server which can be downloaded at https://www.mongodb.com/try/download/community. The server connection should be inserted into \server\db\index.js. The server can be started using node index.js in \server\ and the client can be started using npm start in \client\. A cors addon may be needed in your browser.
  
