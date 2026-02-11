@@ -1,8 +1,39 @@
+/**
+ * URL / Login Controllers
+ * ---------------------------------------------------------
+ * This module contains controller functions for managing
+ * login entries within the password manager application.
+ *
+ * Responsibilities:
+ * - Generate and encrypt passwords
+ * - Store encrypted login data in MongoDB
+ * - Retrieve and decrypt stored passwords
+ * - Update and delete login records
+ *
+ */
+
 const LoginInfo = require('../models/logins-model')
 const passwordGenerator = require('../utils/pw-generator')
 const encryptor = require('../utils/pw-encryption')
 
-//create login info from website
+/**
+ * Create a new login entry
+ *
+ * Flow:
+ * 1. Validate website input
+ * 2. Generate a random password
+ * 3. Encrypt the password
+ * 4. Store encrypted password + IV in database
+ *
+ * Request Body:
+ * {
+ *   website: string
+ * }
+ *
+ * Response:
+ * 201 - Created
+ * 400 - Validation or database error
+ */
 createLogins = (req, res) => {
     const website = req.body.website
     
@@ -43,7 +74,17 @@ createLogins = (req, res) => {
 
 } 
 
-//decrypt password using utils
+/**
+ * Decrypt a stored password
+ *
+ * Request Params:
+ * - pw: encrypted password
+ * - iv: initialization vector
+ *
+ * Response:
+ * 200 - Decrypted password returned
+ * 400 - Decryption failure
+ */
 decryptPassword = async (req, res) => {
     const encryption = { pw: req.params.pw, iv: req.params.iv }
     const decryptedPassword = encryptor.decrypt(encryption)
@@ -61,7 +102,17 @@ decryptPassword = async (req, res) => {
     })
 }
 
-//delete login info from website
+/**
+ * Delete a login entry by website name
+ *
+ * Request Params:
+ * - website: string
+ *
+ * Response:
+ * 200 - Deleted successfully
+ * 400 - Database error
+ * 404 - Website not found
+ */
 deleteLogins = async (req, res) => {
 
     await LoginInfo.deleteOne({ website: req.params.website }, (err, website) => {
@@ -75,7 +126,14 @@ deleteLogins = async (req, res) => {
     }).catch(err => console.log(err)) 
 }
 
-//get all login info in database
+/**
+ * Retrieve all stored login entries
+ *
+ * Response:
+ * 200 - List of login records
+ * 400 - Database error
+ * 404 - Website records not found
+ */
 getLogins = async (req, res) => {
     
     await LoginInfo.find({}, (err, websites) => {
@@ -90,7 +148,17 @@ getLogins = async (req, res) => {
 
 }
 
-//get password for website
+/**
+ * Retrieve login entry by website
+ *
+ * Request Params:
+ * - website: string
+ *
+ * Response:
+ * 200 - Login entry returned
+ * 400 - Database error
+ * 404 - Website not found
+ */
 getPasswordByWebsite = async (req, res) => {
 
     await LoginInfo.findOne({ website: req.params.website }, (err, logins) => {
@@ -107,7 +175,25 @@ getPasswordByWebsite = async (req, res) => {
     
 }
 
-//update password for website
+/**
+ * Update password for an existing website
+ *
+ * Flow:
+ * 1. Validate request body
+ * 2. Encrypt new password
+ * 3. Update encrypted password and IV in database
+ *
+ * Request Body:
+ * {
+ *   website: string,
+ *   pw: string
+ * }
+ *
+ * Response:
+ * 200 - Updated successfully
+ * 400 - Validation or database error
+ * 404 - Website not found
+ */
 updatePassword = async (req, res) => {
     const body = req.body
 
@@ -118,7 +204,6 @@ updatePassword = async (req, res) => {
         })
     }
 
-    //encrypt user inputted password and save encrypted password and new iv
     const password = body.pw
     const encrypted = encryptor.encrypt(password)
 
