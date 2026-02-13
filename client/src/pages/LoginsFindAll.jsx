@@ -1,10 +1,28 @@
+/**
+ * LoginsFindAll Page Component
+ * ---------------------------------------------------------
+ * Displays all saved login credentials in a table format.
+ *
+ * Responsibilities:
+ * - Fetch all login information from the backend API
+ * - Render a sortable and filterable table using ReactTable
+ * - Provide actions for:
+ *   - Decrypting passwords for a specific login
+ *   - Deleting a login entry
+ *
+ * Notes:
+ * - DecryptPassword and DeleteLogin are child components handling user interactions
+ * - Styled-components are used for layout and cursor styling
+ * - Window alerts and confirm dialogs are used for user feedback
+ */
+
 import React, { Component } from 'react'
 import ReactTable from 'react-table-6'
 import api from '../api'
 import styled from 'styled-components'
 import 'react-table-6/react-table.css'
 
-
+// Styled components for layout and form controls
 const Wrapper = styled.div`
     padding: 0 20px 20px 20px;
 `
@@ -17,7 +35,7 @@ const Delete = styled.div`
     cursor: pointer;
 `
 
-//decrypt password and show user in window prompt
+// Child component: decrypt password for a login
 class DecryptPassword extends Component {
     decryptPassword = async () => {
         const pw = this.props.pw
@@ -32,7 +50,7 @@ class DecryptPassword extends Component {
     }
 }
 
-//prompt user to delete login info for one website
+// Child component: delete a login entry
 class DeleteLogin extends Component {
     deleteLogin = async () => {
 
@@ -50,6 +68,7 @@ class DeleteLogin extends Component {
     }
 }
 
+// Main component: displays all logins in a table
 class LoginsFindAll extends Component {
     constructor(props) {
         super(props)
@@ -60,6 +79,7 @@ class LoginsFindAll extends Component {
         }
     }
 
+    // Fetch login data after component mounts
     componentDidMount = async () => {
         this.setState({ isLoading: true })
 

@@ -1,7 +1,26 @@
+/**
+ * LoginsUpdate Page Component
+ * ---------------------------------------------------------
+ * Provides a form to update the password for a specific website.
+ *
+ * Responsibilities:
+ * - Capture website and new password input from the user
+ * - Send update request to the backend API
+ * - Encrypt the new password server-side
+ * - Provide user feedback via window alerts
+ * - Reset form state after successful update
+ *
+ * Notes:
+ * - Uses styled-components for layout and Bootstrap styling
+ * - Cancel button navigates back to the "Find All Logins" page
+ * - Ensures password management functionality is clear and modular
+ */
+
 import React, { Component } from 'react'
 import api from '../api'
 import styled from 'styled-components'
 
+// Styled components for layout and form controls
 const Title = styled.h1.attrs({
     classname: 'h1',
 })``
@@ -37,7 +56,6 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
-//update password for one website with user chosen password
 class LoginsUpdate extends Component {
     
     constructor(props) {

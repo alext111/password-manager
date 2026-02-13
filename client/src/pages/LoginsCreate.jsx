@@ -1,7 +1,26 @@
+/**
+ * LoginsCreate Page Component
+ * ---------------------------------------------------------
+ * Provides a form for creating new login credentials for a website.
+ *
+ * Responsibilities:
+ * - Capture website input from the user
+ * - Check if login information already exists
+ * - Generate and encrypt a password using the backend API
+ * - Provide feedback to the user via alerts
+ * - Reset form state after successful creation
+ *
+ * Notes:
+ * - Uses styled-components for consistent layout and Bootstrap styling
+ * - Interacts with the API layer (../api) for CRUD operations
+ * - Navigation via Cancel button returns to the "Find All Logins" page
+ */
+
 import React, { Component } from 'react'
 import api from '../api'
 import styled from 'styled-components'
 
+// Styled components for layout and form elements
 const Title = styled.h1.attrs({
     classname: 'h1',
 })``
@@ -45,23 +64,25 @@ class LoginsCreate extends Component {
         this.state = { website: '' }
     }
 
+    // Update website state as user types
     handleChangeWebsite = async event => {
         const website = event.target.value
         this.setState({ website })
     }
 
-    //handle generate password button click
+    // Handle the "Generate Password" button click
     handleGenerateLogins = async () => {
         const { website } = this.state
         const payload = { website }
 
-        //check if login info already exists, else creates new login info
+        // Check if login info already exists
         try {
             await api.getLoginByWebsite(website).then(res => {
                 window.alert('Login information already exists')
             })
         }
         catch {
+            // If not, create new login info
             api.postLogin(payload).then(res => {
                 window.alert('Login information successfully created')
                 this.setState({ website: ''})

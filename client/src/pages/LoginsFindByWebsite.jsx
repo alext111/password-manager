@@ -1,7 +1,26 @@
+/**
+ * LoginsFindByWebsite Page Component
+ * ---------------------------------------------------------
+ * Provides a form to search for a saved password by website.
+ *
+ * Responsibilities:
+ * - Capture website input from the user
+ * - Fetch login credentials for the specified website from the backend API
+ * - Decrypt the password using the API
+ * - Display the decrypted password to the user
+ * - Reset or update form state after successful retrieval
+ *
+ * Notes:
+ * - Uses styled-components for consistent layout and Bootstrap styling
+ * - Window alert used for user feedback
+ * - Cancel button navigates back to the "Find All Logins" page
+ */
+
 import React, { Component } from 'react'
 import api from '../api'
 import styled from 'styled-components'
 
+// Styled components for layout and form controls
 const Title = styled.h1.attrs({
     classname: 'h1',
 })``

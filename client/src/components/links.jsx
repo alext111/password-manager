@@ -1,7 +1,23 @@
+/**
+ * Links Component
+ * ---------------------------------------------------------
+ * Renders the navigation links in the application NavBar.
+ *
+ * Responsibilities:
+ * - Display main navigation links for all pages
+ * - Use React Router <Link> for client-side routing
+ * - Apply styling via styled-components
+ *
+ * Notes:
+ * - Collapse, List, and Item are styled divs for Bootstrap navbar layout
+ * - This component is used inside NavBar
+ */
+
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
+// Styled components for Bootstrap navbar structure
 const Collapse = styled.div.attrs({
     className: 'collapse navbar-collapse',
 })``
