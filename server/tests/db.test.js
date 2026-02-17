@@ -193,7 +193,7 @@ describe('Changing specific document', () => {
 			.send(updateLogin)
 			.expect(200)
   
-		response = await api
+		const response = await api
 			.get(`/api/login/${updateLogin.website}`)
 			.send({website: 'TestWebsite'})
 			.expect(200)

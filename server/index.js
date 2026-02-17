@@ -78,6 +78,10 @@ app.use('/api', urlRouter)
  *
  * Listens on the configured port from config.js
  */
-app.listen(config.apiPort, console.log(`Server is running on port ${config.apiPort}`));
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(config.apiPort, () => {
+    console.log(`Server is running on port ${config.apiPort}`)
+  })
+}
 
 module.exports = app
