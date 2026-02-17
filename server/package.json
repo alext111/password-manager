@@ -8,7 +8,11 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
-  "keywords": ["password", "manager", "server"],
+  "keywords": [
+    "password",
+    "manager",
+    "server"
+  ],
   "author": "Alex Tran",
   "license": "ISC",
   "dependencies": {
@@ -25,7 +29,7 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "jest": "^30.2.0",
-    "mongodb-memory-server": "^8.12.1",
+    "mongodb-memory-server": "^8.16.1",
     "nodemon": "^3.1.11",
     "supertest": "^7.2.2"
   }

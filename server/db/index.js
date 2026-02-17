@@ -26,12 +26,19 @@ const config = require('../utils/config')
  * Options:
  * - useNewUrlParser: Enables the new MongoDB connection string parser
  */
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect(config.mongouri)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB Connection Error', err))
+}
+
+/*
 mongoose
     .connect(config.mongouri, { useNewUrlParser: true})
     .catch(e => {
         console.error('Connection Error', e.message)
     })
-
+*/
     
 /**
  * Mongoose connection instance

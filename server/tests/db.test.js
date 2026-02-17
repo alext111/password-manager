@@ -26,6 +26,58 @@ const loginModel = require('../models/logins-model')
 const passwordGenerator = require('../utils/pw-generator')
 const encryptor = require('../utils/pw-encryption')
 const api = supertest(app)
+const { MongoMemoryServer } = require('mongodb-memory-server')
+
+let mongoServer
+
+/**
+ * Test Setup & Teardown
+ * --------------------------------------------------
+ * beforeAll:
+ * - Clears database
+ * - Seeds initial test documents
+ *
+ * afterAll:
+ * - Closes mongoose connection
+ */
+beforeAll(async () => {
+  // Start in-memory MongoDB instance
+  mongoServer = await MongoMemoryServer.create()
+  const mongoUri = mongoServer.getUri()
+
+  // Connect mongoose to in-memory DB
+  await mongoose.connect(mongoUri)
+
+  // Clear and seed DB
+  await loginModel.deleteMany({})
+
+  const loginObject1 = new loginModel(helper.initialLoginInfo[0])
+  await loginObject1.save()
+
+  const loginObject2 = new loginModel(helper.initialLoginInfo[1])
+  await loginObject2.save()
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
+  await mongoServer.stop()
+})
+
+/*
+beforeAll(async () => {
+	await loginModel.deleteMany({})
+	
+	let loginObject1 = new loginModel(helper.initialLoginInfo[0])
+	await loginObject1.save()
+
+	let loginObject2 = new loginModel(helper.initialLoginInfo[1])
+	await loginObject2.save()
+})
+
+afterAll(() => {
+	mongoose.connection.close()
+})
+	*/
 
 /**
  * Test Group: Initial Database State
@@ -146,7 +198,7 @@ describe('Changing specific document', () => {
 			.send({website: 'TestWebsite'})
 			.expect(200)
   
-		expect(newLogin.pw = updateLogin.pw)
+		expect(newLogin.body.data.pw).toBe(updateLogin.pw)
 	})
 
 	test('Specific password will not be changed with empty website', async () => {
@@ -198,26 +250,3 @@ describe('Deleting specific document', () => {
 	})
 })
 
-/**
- * Test Setup & Teardown
- * --------------------------------------------------
- * beforeAll:
- * - Clears database
- * - Seeds initial test documents
- *
- * afterAll:
- * - Closes mongoose connection
- */
-beforeAll(async () => {
-	await loginModel.deleteMany({})
-	
-	let loginObject1 = new loginModel(helper.initialLoginInfo[0])
-	await loginObject1.save()
-
-	let loginObject2 = new loginModel(helper.initialLoginInfo[1])
-	await loginObject2.save()
-})
-
-afterAll(() => {
-	mongoose.connection.close()
-})
