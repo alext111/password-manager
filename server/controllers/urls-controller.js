@@ -34,7 +34,7 @@ const encryptor = require('../utils/pw-encryption')
  * 201 - Created
  * 400 - Validation or database error
  */
-createLogins = (req, res) => {
+createLogins = async (req, res) => {
     const website = req.body.website
     
     if (!website) {
@@ -48,30 +48,20 @@ createLogins = (req, res) => {
     const encrypted = encryptor.encrypt(password)
     const loginInfo = new LoginInfo({ website: website, pw: encrypted.pw, iv: encrypted.iv })
     
-    if (!loginInfo) {
+    try {
+        await loginInfo.save()
+        return res.status(201).json({
+            success: true,
+            id: loginInfo._id,
+            message: 'Website added and password generated',
+        })
+    } catch (error) {
         return res.status(400).json({
             success: false,
-            error: err,
+            error,
+            message: 'Website not added',
         })
     }
-
-    loginInfo
-        .save()
-        .then(() => {
-            return res.status(201).json({
-                success: true,
-                id: loginInfo._id,
-                message: 'Website added and password generated',
-            })
-        })
-        .catch(error => {
-            return res.status(400).json({
-                success: false,
-                error,
-                message: 'Website not added',
-            })
-        })
-
 } 
 
 /**
@@ -114,16 +104,15 @@ decryptPassword = async (req, res) => {
  * 404 - Website not found
  */
 deleteLogins = async (req, res) => {
-
-    await LoginInfo.deleteOne({ website: req.params.website }, (err, website) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!website) {
+    try {
+        const result = await LoginInfo.deleteOne({ website: req.params.website })
+        if (result.deletedCount === 0) {
             return res.status(404).json({ success: false, error: 'Website not found' })
         }
-        return res.status(200).json({success: true, data: website })
-    }).catch(err => console.log(err)) 
+        return res.status(200).json({ success: true, data: result })
+    } catch (err) {
+        return res.status(400).json({ success: false, error: err })
+    }
 }
 
 /**
@@ -135,17 +124,15 @@ deleteLogins = async (req, res) => {
  * 404 - Website records not found
  */
 getLogins = async (req, res) => {
-    
-    await LoginInfo.find({}, (err, websites) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
+    try {
+        const websites = await LoginInfo.find({})
         if (!websites.length) {
-            return res.status(404).json({ success: false, error: 'Website not found' })
+            return res.status(404).json({ success: false, error: 'No websites found' })
         }
-        return res.status(200).json({success: true, data: websites })
-    }).catch(err => console.log(err))
-
+        return res.status(200).json({ success: true, data: websites })
+    } catch (err) {
+        return res.status(400).json({ success: false, error: err })
+    }
 }
 
 /**
@@ -160,19 +147,15 @@ getLogins = async (req, res) => {
  * 404 - Website not found
  */
 getPasswordByWebsite = async (req, res) => {
-
-    await LoginInfo.findOne({ website: req.params.website }, (err, logins) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
+    try {
+        const logins = await LoginInfo.findOne({ website: req.params.website })
         if (!logins) {
-            console.log(res)
             return res.status(404).json({ success: false, error: 'Website not found' })
         }
-        
-        return res.status(200).json({success: true, data: logins })
-    }).catch(err => console.log(err))
-    
+        return res.status(200).json({ success: true, data: logins })
+    } catch (err) {
+        return res.status(400).json({ success: false, error: err })
+    }
 }
 
 /**
@@ -195,27 +178,25 @@ getPasswordByWebsite = async (req, res) => {
  * 404 - Website not found
  */
 updatePassword = async (req, res) => {
-    const body = req.body
-
-    if (!body) {
-        return res.status(400).json({
-            success: false,
-            error: 'Cannot have blank info',
-        })
+    const { website, pw } = req.body
+    if (!website || !pw) {
+        return res.status(400).json({ success: false, error: 'Cannot have blank info' })
     }
 
-    const password = body.pw
-    const encrypted = encryptor.encrypt(password)
+    const encrypted = encryptor.encrypt(pw)
 
-    await LoginInfo.updateOne({ website: body.website}, { pw: encrypted.pw, iv: encrypted.iv}, (err, logins) => {
-        if (err) {
-            return res.status(400).json({ success: false, error: err })
-        }
-        if (!logins) {
+    try {
+        const result = await LoginInfo.updateOne(
+            { website },
+            { pw: encrypted.pw, iv: encrypted.iv }
+        )
+        if (result.matchedCount === 0) {
             return res.status(404).json({ success: false, error: 'Website not found' })
         }
-        return res.status(200).json({success: true, data: logins })
-    }).catch(err => console.log(err))
+        return res.status(200).json({ success: true, data: result })
+    } catch (err) {
+        return res.status(400).json({ success: false, error: err })
+    }
 }
 
 module.exports = {
