@@ -193,12 +193,16 @@ describe('Changing specific document', () => {
 			.send(updateLogin)
 			.expect(200)
   
-		newLogin = await api
+		response = await api
 			.get(`/api/login/${updateLogin.website}`)
 			.send({website: 'TestWebsite'})
 			.expect(200)
+
+		const encrypted = response.body.data.pw
+		const iv = response.body.data.iv
+		const decrypted = encryptor.decrypt({pw: encrypted, iv: iv})
   
-		expect(newLogin.body.data.pw).toBe(updateLogin.pw)
+		expect(decrypted).toBe(updateLogin.pw)
 	})
 
 	test('Specific password will not be changed with empty website', async () => {
