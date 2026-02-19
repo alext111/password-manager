@@ -67,6 +67,7 @@ const LoginsFindAll = () => {
   const [logins, setLogins] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
+  // Fetch all logins from backend on component mount
   useEffect(() => {
     const fetchLogins = async () => {
       setIsLoading(true)
@@ -79,6 +80,7 @@ const LoginsFindAll = () => {
 
   const columnHelper = createColumnHelper()
 
+  // Define table columns including action buttons
   const columns = [
     columnHelper.accessor('website', { header: 'Website' }),
     columnHelper.accessor('pw', { header: 'Encrypted Password' }),
@@ -93,6 +95,7 @@ const LoginsFindAll = () => {
     }),
   ]
 
+  // Initialize the table with rows, columns, and row model
   const table = useReactTable({
     data: logins,
     columns,
