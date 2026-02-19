@@ -5,7 +5,7 @@
  *
  * Responsibilities:
  * - Fetch all login information from the backend API
- * - Render a sortable and filterable table using ReactTable
+ * - Render a sortable and filterable table using @tanstack/react-table
  * - Provide actions for:
  *   - Decrypting passwords for a specific login
  *   - Deleting a login entry
@@ -16,145 +16,126 @@
  * - Window alerts and confirm dialogs are used for user feedback
  */
 
-import React, { Component } from 'react'
-import ReactTable from 'react-table-6'
+import React, { useEffect, useState } from 'react'
+import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import api from '../api'
 import styled from 'styled-components'
-import 'react-table-6/react-table.css'
 
 // Styled components for layout and form controls
 const Wrapper = styled.div`
-    padding: 0 20px 20px 20px;
+  padding: 0 20px 20px 20px;
 `
 
 const Decrypt = styled.div`
-    cursor: pointer;
+  cursor: pointer;
+  color: #007bff;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 const Delete = styled.div`
-    cursor: pointer;
+  cursor: pointer;
+  color: #dc3545;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 // Child component: decrypt password for a login
-class DecryptPassword extends Component {
-    decryptPassword = async () => {
-        const pw = this.props.pw
-        const iv = this.props.iv
-        await api.decryptPassword(pw, iv).then(res => {
-            window.alert(`${res.data.data}`)
-        })
-    }
-
-    render () {
-        return <Decrypt onClick={this.decryptPassword}>Show Password</Decrypt>
-    }
+const DecryptPassword = ({ pw, iv }) => {
+  const decryptPassword = async () => {
+    const res = await api.decryptPassword(pw, iv)
+    window.alert(res.data.data)
+  }
+  return <Decrypt onClick={decryptPassword}>Show Password</Decrypt>
 }
 
 // Child component: delete a login entry
-class DeleteLogin extends Component {
-    deleteLogin = async () => {
-
-        if (window.confirm(`Do you want to delete ${this.props.website} login information?`,)) {
-
-            await api.deleteLogin(this.props.website).then(res => {
-                window.location.reload()
-            })
-            
-        }
+const DeleteLogin = ({ website }) => {
+  const deleteLogin = async () => {
+    if (window.confirm(`Do you want to delete ${website} login information?`)) {
+      await api.deleteLogin(website)
+      window.location.reload()
     }
-
-    render () {
-        return <Delete onClick={this.deleteLogin}>Delete</Delete>
-    }
+  }
+  return <Delete onClick={deleteLogin}>Delete</Delete>
 }
 
 // Main component: displays all logins in a table
-class LoginsFindAll extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            logins: [],
-            columns: [],
-            isLoading: false,
-        }
+const LoginsFindAll = () => {
+  const [logins, setLogins] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchLogins = async () => {
+      setIsLoading(true)
+      const res = await api.getLogins()
+      setLogins(res.data.data)
+      setIsLoading(false)
     }
+    fetchLogins()
+  }, [])
 
-    // Fetch login data after component mounts
-    componentDidMount = async () => {
-        this.setState({ isLoading: true })
+  const columnHelper = createColumnHelper()
 
-        await api.getLogins().then(logins => {
-            this.setState({
-                logins: logins.data.data,
-                isLoading: false,
-            })
-        })
-    }
-    
-    render() {
-        const { logins, isLoading } = this.state
-        console.log('TCL: LoginsList -> render -> logins', logins)
-        
-        const columns = [
-            {
-                Header: 'Website',
-                accessor: 'website',
-                filterable: true,
-            },
-            {
-                Header: 'Encrypted Password',
-                accessor: 'pw',
-                filterable: true,
-            },
-            {
-                Header: 'Last Updated',
-                accessor: 'updatedAt',
-                filterable: true,
-            },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <DecryptPassword website={props.original.website} pw={props.original.pw} iv={props.original.iv} />
-                        </span>
-                    )
-                }
-            },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <DeleteLogin website={props.original.website} />
-                        </span>
-                    )
-                }
-            }
-        ]
+  const columns = [
+    columnHelper.accessor('website', { header: 'Website' }),
+    columnHelper.accessor('pw', { header: 'Encrypted Password' }),
+    columnHelper.accessor('updatedAt', { header: 'Last Updated' }),
+    columnHelper.display({
+      id: 'decrypt',
+      cell: info => <DecryptPassword pw={info.row.original.pw} iv={info.row.original.iv} />,
+    }),
+    columnHelper.display({
+      id: 'delete',
+      cell: info => <DeleteLogin website={info.row.original.website} />,
+    }),
+  ]
 
-        let showTable = true
-        if (!logins.length) {
-            showTable = false
-        }
+  const table = useReactTable({
+    data: logins,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
 
-        return (
-            <Wrapper>
-                {showTable && (
-                    <ReactTable
-                        data={logins}
-                        columns={columns}
-                        loading={isLoading}
-                        defaultPageSize={10}
-                        showPageSizeOptions={true}
-                        minRows={0}
-                    />
-                )}
-            </Wrapper>
-        )
-    }
+  return (
+    <Wrapper>
+      {logins.length > 0 && (
+        <table className="table table-striped table-bordered table-hover">
+          <thead>
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : typeof header.column.columnDef.header === 'function'
+                      ? header.column.columnDef.header(header.getContext())
+                      : header.column.columnDef.header}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map(row => (
+                <tr key={row.id}>
+                {row.getVisibleCells().map(cell => (
+                    <td key={cell.id}>
+                    {typeof cell.column.columnDef.cell === 'function'
+                        ? cell.column.columnDef.cell(cell.getContext())
+                        : cell.getValue()}
+                    </td>
+                ))}
+                </tr>
+            ))}
+            </tbody>
+        </table>
+      )}
+    </Wrapper>
+  )
 }
+
 
 export default LoginsFindAll
