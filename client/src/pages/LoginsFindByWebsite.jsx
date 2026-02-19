@@ -106,11 +106,11 @@ class LoginsFindByWebsite extends Component {
                     onChange={this.handleChangeWebsite}
                 />
 
-                <Label>
+                <Label htmlFor="password-output">
                     Password
                 </Label>
                 <br></br>
-                <OutputText>
+                <OutputText id="password-output" aria-label="Password" role="textbox">
                     {pw}
                 </OutputText>
                 <br></br>
