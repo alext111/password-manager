@@ -1,7 +1,7 @@
 /**
  * LoginsFindByWebsite.test.jsx
  * ---------------------------------------------------------
- * Tests for LoginsFindByWebsite Page Component
+ * Unit tests for LoginsFindByWebsite Page Component
  * 
  * Verifies the behavior of the "Find Password by Website" page:
  * - Ensures website input updates correctly as the user types

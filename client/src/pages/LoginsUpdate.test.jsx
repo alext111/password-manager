@@ -1,7 +1,7 @@
 /**
  * LoginsUpdate.test.jsx
  * ---------------------------------------------------------
- * Tests for LoginsUpdate Page Component
+ * Unit tests for LoginsUpdate Page Component
  * 
  * Verifies the behavior of the "Update Password" page:
  * - Ensures website and password inputs update correctly

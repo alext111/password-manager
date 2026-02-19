@@ -1,9 +1,9 @@
 /**
  * LoginsCreate.test.jsx
  * ---------------------------------------------------------
- * Tests for the LoginsCreate Page Component
+ * Unit tests for the LoginsCreate Page Component
  *
- * Responsibilities Tested:
+ * Responsibilities:
  * - Website input updates correctly as the user types
  * - "Generate Password" button creates a new login when website does not exist
  * - "Generate Password" button shows alert if login already exists

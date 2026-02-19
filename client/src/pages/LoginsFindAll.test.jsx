@@ -1,18 +1,13 @@
 /**
  * LoginsFindAll.test.jsx
  * ---------------------------------------------------------
- * Unit tests for the LoginsFindAll React component.
+ * Unit tests for the LoginsFindAll Page component
  *
  * Responsibilities:
  * - Ensure that the login table renders correctly with data
  * - Verify that the component behaves correctly when there are no logins
  * - Test the "Show Password" button triggers decryption and displays an alert
  * - Test the "Delete" button calls the API and reloads the page when confirmed
- *
- * Notes:
- * - Uses Jest for test runner and mocks
- * - Uses React Testing Library for DOM rendering and interaction
- * - `api` module is mocked to avoid real HTTP requests
  */
 
 
