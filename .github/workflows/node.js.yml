@@ -15,7 +15,7 @@ env:
   mongouri: ${{ secrets.mongouri }}
 
 jobs:
-  build:
+  backend:
     runs-on: windows-latest
 
     steps:
@@ -32,7 +32,28 @@ jobs:
       run: npm ci
       working-directory: ./server
 
-    - name: Run tests
+    - name: Run backend tests
       run: npm test
       working-directory: ./server
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js and cache client dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+          cache-dependency-path: ./client/package-lock.json
+
+      - name: Install client dependencies
+        run: npm ci
+        working-directory: ./client
+
+      - name: Run frontend tests
+        run: CI=true npm test
+        working-directory: ./client
       
