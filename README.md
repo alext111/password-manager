@@ -38,7 +38,7 @@ Backend tests are located in the `server/tests` directory
  This application requires the following: react, axios, mongoose, express, body-parser, styled-components, react-router-dom, react-table-6, bootstrap.
  
 ## Live Demo
-![password-manager](https://user-images.githubusercontent.com/49249379/130858917-4cdde4bc-e331-46f1-961d-46cfc5a56032.gif)
+![Live Demo](./client/src/pmdemo.gif)
 
 
   
