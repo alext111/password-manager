@@ -78,13 +78,23 @@ const LoginsFindAll = () => {
     fetchLogins()
   }, [])
 
+  const formatDate = (date) =>
+    new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+
   const columnHelper = createColumnHelper()
 
   // Define table columns including action buttons
   const columns = [
     columnHelper.accessor('website', { header: 'Website' }),
     columnHelper.accessor('pw', { header: 'Encrypted Password' }),
-    columnHelper.accessor('updatedAt', { header: 'Last Updated' }),
+    columnHelper.accessor('updatedAt', {
+      header: 'Last Updated',
+      cell: info => formatDate(info.getValue()),
+    }),
     columnHelper.display({
       id: 'decrypt',
       cell: info => <DecryptPassword pw={info.row.original.pw} iv={info.row.original.iv} />,
