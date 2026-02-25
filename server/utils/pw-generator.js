@@ -2,55 +2,39 @@
  * Password Generation Utility
  * ---------------------------------------------------------
  * This module generates random passwords for new login entries
- *
- * Password Structure:
- * - 20 characters total
- * - 5 uppercase letters
- * - 5 lowercase letters
- * - 5 numbers
- * - 5 symbols
- *
  * The generator ensures a balanced mix of character types
  * by iterating over a predefined set of random character
  * functions
- *
- * NOTE:
- * This is a demonstration implementation.
- * It uses Math.random(), which is not cryptographically secure.
- * In a production-grade password manager, a secure random
- * generator (e.g., crypto.randomBytes) should be used.
  */
 
 const randomFunctions = [randomUppercase, randomLowercase, randomNumber, randomSymbol]
+const crypto = require('crypto')
 
 /**
  * Generate a random uppercase letter (A–Z).
- * ASCII range: 65–90
  *
  * @returns {string} Single uppercase character
  */
 function randomUppercase() {
-    return String.fromCharCode(Math.floor(Math.random()*26+65))
+    return String.fromCharCode(crypto.randomInt(65, 91))
 }
 
 /**
  * Generate a random lowercase letter (a–z).
- * ASCII range: 97–122
  *
  * @returns {string} Single lowercase character
  */
 function randomLowercase() {
-    return String.fromCharCode(Math.floor(Math.random()*26+97))
+    return String.fromCharCode(crypto.randomInt(97, 123))
 }
 
 /**
  * Generate a random numeric character (0–9).
- * ASCII range: 48–57
  *
  * @returns {string} Single numeric character
  */
 function randomNumber() {
-    return String.fromCharCode(Math.floor(Math.random()*10+48))
+    return String.fromCharCode(crypto.randomInt(48, 58))
 }
 
 /**
@@ -60,7 +44,24 @@ function randomNumber() {
  */
 function randomSymbol() {
     const symbols = '~!@#$%^&*()_-+={[}]|;<,>.?/'
-    return symbols[Math.floor(Math.random()*symbols.length)]
+    return symbols[crypto.randomInt(0, symbols.length)]
+}
+
+/**
+ * Secure shuffle using crypto.randomInt
+ *
+ * @param {Array} array
+ * @returns {Array} shuffled array
+ */
+function secureShuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const randomIndex = crypto.randomInt(0, i + 1)
+        const temp = array[i]
+        array[i] = array[randomIndex]
+        array[randomIndex] = temp
+    }
+
+    return array
 }
 
 /**
@@ -73,21 +74,27 @@ function randomSymbol() {
  *   1 lowercase
  *   1 number
  *   1 symbol
+ * - Securely shuffles the result
  *
  * Result:
  * - Fixed length: 20 characters
  * - Even distribution across character categories
+ * - No predictable ordering
  *
  * @returns {string} Generated password
  */
 function generatePassword() {
-    pw = ''
-    for(let i = 0; i<5; i++) {
-        randomFunctions.forEach(element => {
-            pw += element()
-        });
+    const pw = []
+
+    for (let i = 0; i < 5; i++) {
+        randomFunctions.forEach(fn => {
+            pw.push(fn())
+        })
     }
-    return pw
+
+    secureShuffle(pw)
+
+    return pw.join('')
 }
 
 module.exports = {
