@@ -38,9 +38,9 @@ const apiPort = process.env.PORT || 3001
  * Must be provided via environment variable.
  * Required for successful database connection.
  */
-const mongouri = process.env.mongouri
+const mongouri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/password-manager'
 
 module.exports = {
-    apiPort,
+    apiPort: process.env.PORT || 3001,
     mongouri
   }
