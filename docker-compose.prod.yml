@@ -29,8 +29,12 @@ services:
     restart: always
     ports:
       - "80:80"   # production port mapping
+      - "443:443"
     depends_on:
       - backend
+    volumes:
+    - /etc/letsencrypt/live/yourdomain.com/fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
+    - /etc/letsencrypt/live/yourdomain.com/privkey.pem:/etc/ssl/private/privkey.pem:ro
 
 volumes:
   mongo_data:
