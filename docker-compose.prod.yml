@@ -33,8 +33,8 @@ services:
     depends_on:
       - backend
     volumes:
-    - /etc/letsencrypt/live/yourdomain.com/fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
-    - /etc/letsencrypt/live/yourdomain.com/privkey.pem:/etc/ssl/private/privkey.pem:ro
+    - /etc/letsencrypt/live/a-tran.dev:/etc/letsencrypt/live/a-tran.dev:ro
+    - /etc/letsencrypt/archive/a-tran.dev:/etc/letsencrypt/archive/a-tran.dev:ro
 
 volumes:
   mongo_data:
