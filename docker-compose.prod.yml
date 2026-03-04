@@ -35,6 +35,7 @@ services:
     volumes:
     - /etc/letsencrypt/live/a-tran.dev:/etc/letsencrypt/live/a-tran.dev:ro
     - /etc/letsencrypt/archive/a-tran.dev:/etc/letsencrypt/archive/a-tran.dev:ro
+    - /var/lib/letsencrypt:/var/lib/letsencrypt:ro
 
 volumes:
   mongo_data:
