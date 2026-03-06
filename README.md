@@ -26,20 +26,7 @@ Key features include:
 - Automated frontend and backend testing
 
 ## Architecture
-React Frontend
-      │
-      │ HTTP Requests
-      ▼
-Nginx Reverse Proxy
-      │
-      │ 
-      ▼
-Express / Node.js API (EC2)
-      │
-      │ Encryption & Business Logic
-      ▼
-MongoDB Database
-
+<img width="1080" height="2357" alt="User Browser to MongoDB Flow" src="https://github.com/user-attachments/assets/0cdb7335-2e93-4a60-9c3c-91690565c000" />
 
 ## Tech Stack
 
