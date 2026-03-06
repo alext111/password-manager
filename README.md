@@ -31,7 +31,7 @@ Key features include:
 - Automated frontend and backend testing
 
 ## System Architecture
-<img width="1229" height="127" alt="System Architecture" src="https://github.com/user-attachments/assets/ce8903b5-7ff1-4d82-8648-feb3a2868c04" />
+<img width="1418" height="127" alt="System Architecture" src="https://github.com/user-attachments/assets/62ef1d95-cd3c-4d88-a0c5-44ea8d589cc7" />
 
 ## Tech Stack
 
@@ -103,7 +103,7 @@ Configured as a reverse proxy to:
 ### SSL / HTTPS
 Traffic is secured using HTTPS certificates.
 
-### Architecture
+### Deployment Architecture
 <img width="1349" height="127" alt="Deployment Architecture" src="https://github.com/user-attachments/assets/eada737d-f685-44c2-8340-05ecd2d0f553" />
 
 
