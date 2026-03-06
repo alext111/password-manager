@@ -1,6 +1,11 @@
 # Password Manager
 
+Deployed at: [https://www.a-tran.dev](https://www.a-tran.dev)
+
 A full-stack password manager built with the MERN stack (MongoDB, Express, React, Node.js) that demonstrates secure credential storage concepts, REST API design, testing, and cloud deployment practices.
+
+## Live Demo
+![Live Demo](./client/src/pmdemo.gif)
 
 ## ⚠️ Disclaimer
 
@@ -25,9 +30,8 @@ Key features include:
 - REST API architecture
 - Automated frontend and backend testing
 
-## Architecture
-<img width="270" height="589" alt="User Browser to MongoDB Flow" src="https://github.com/user-attachments/assets/5e97f39c-1942-4a3a-a788-85104098ac78" />
-
+## System Architecture
+<img width="1229" height="127" alt="System Architecture" src="https://github.com/user-attachments/assets/ce8903b5-7ff1-4d82-8648-feb3a2868c04" />
 
 ## Tech Stack
 
@@ -99,8 +103,8 @@ Configured as a reverse proxy to:
 ### SSL / HTTPS
 Traffic is secured using HTTPS certificates.
 
-### Domain Configuration
-The application is accessible through a custom domain.
+### Architecture
+<img width="1349" height="127" alt="Deployment Architecture" src="https://github.com/user-attachments/assets/eada737d-f685-44c2-8340-05ecd2d0f553" />
 
 
 ## CI/CD Pipeline
@@ -161,5 +165,4 @@ https://www.mongodb.com/try/download/community
     cd client
     npm start
 
-## Live Demo
-![Live Demo](./client/src/pmdemo.gif)
+
