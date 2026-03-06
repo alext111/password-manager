@@ -1,44 +1,177 @@
 # Password Manager
 
-This repository contains a password manager application built using the MERN stack (MongoDB, Express, React, Node.js).
-
----
+A full-stack password manager built with the MERN stack (MongoDB, Express, React, Node.js) that demonstrates secure credential storage concepts, REST API design, testing, and cloud deployment practices.
 
 ## ⚠️ Disclaimer
 
 This application is **not a production-ready password manager** and should **not be used to store real or sensitive credentials**.
 
-It exists solely to showcase:
+It exists to showcase:
 - Full-stack JavaScript development
-- Secure handling concepts
+- Secure data handling concepts
 - Testing and CI/CD fundamentals
+- Automated testing
+- Containerization and cloud deployment
 
 ## Description
- This application allows for users to generate and manage passwords that are encrypted and stored into MongoDB. Passwords are encrypted using AES encryption which can be manually chosen by the user if desired.
+The application allows users to generate, encrypt, store, and retrieve passwords through a web interface.
+
+Key features include:
+
+- Secure password generation
+- AES-based encryption before storage
+- Encrypted password storage in MongoDB
+- Full CRUD operations for password entries
+- REST API architecture
+- Automated frontend and backend testing
+
+## Architecture
+React Frontend
+      │
+      │ HTTP Requests
+      ▼
+Nginx Reverse Proxy
+      │
+      │ 
+      ▼
+Express / Node.js API (EC2)
+      │
+      │ Encryption & Business Logic
+      ▼
+MongoDB Database
+
+
+## Tech Stack
 
 ### Frontend
-- Built with React
-- Handles UI, form input, and client-side logic
-- Communicates with the backend via HTTP API calls
+
+- React
+- Axios
+- React Router
+- Styled Components
+- Bootstrap
+
+Responsibilities:
+
+- User interface and form handling
+- Password management dashboard
+- Communication with backend API
 
 ### Backend
-- Built with Node.js and Express
-- Exposes REST API endpoints
-- Handles password generation, encryption, and decryption
-- Uses MongoDB for data storage
-- Includes automated tests using Jest
- 
-### 🧪 Testing
-Backend tests are located in the `server/tests` directory
 
-## How to use
- This application requires a MongoDB server which can be downloaded at https://www.mongodb.com/try/download/community. The server connection should be inserted into \server\db\index.js. The server can be started using node index.js in \server\ and the client can be started using npm start in \client\. A cors addon may be needed in your browser.
- 
-## Dependencies
- This application requires the following: react, axios, mongoose, express, body-parser, styled-components, react-router-dom, react-table-6, bootstrap.
- 
+- Node.js
+- Express
+- MongoDB
+- Mongoose
+
+Responsibilities:
+
+- REST API endpoints
+- Password generation logic
+- AES encryption and decryption
+- Database persistence
+
+### Testing
+
+- Jest
+
+#### Frontend
+Test coverage includes:
+
+- Component rendering
+- User interactions
+- API integration behavior
+
+#### Backend
+Test coverage includes:
+
+- API endpoint behavior
+- Password generation logic
+- Encryption functionality
+- Database interactions
+
+
+## Cloud Deployment (AWS)
+
+The application is deployed on Amazon Web Services (AWS) using an EC2 instance.
+
+Infrastructure components include:
+
+### EC2
+Runs the Node.js backend and serves the React frontend.
+
+### Nginx
+
+Configured as a reverse proxy to:
+
+- Handle HTTPS traffic
+- Forward requests to the Node.js application
+- Improve security and performance
+
+### SSL / HTTPS
+Traffic is secured using HTTPS certificates.
+
+### Domain Configuration
+The application is accessible through a custom domain.
+
+
+## CI/CD Pipeline
+
+A GitHub Actions workflow automatically builds and tests the application.
+
+### Continuous Integration
+
+On every push:
+
+- Install dependencies
+- Run backend tests
+- Run frontend tests
+- Validate build
+
+### Continuous Deployment
+
+Successful builds trigger deployment to the AWS EC2 instance where the updated application is pulled and restarted.
+
+
+## Running the Project Locally
+### Prerequisites
+
+- Node.js
+- MongoDB
+
+MongoDB Community Server can be downloaded here:
+https://www.mongodb.com/try/download/community
+
+1. Clone the repository
+    git clone https://github.com/alext111/password-manager.git
+    cd password-manager
+
+2. Install dependencies
+    cd server
+    npm install
+
+    cd ../client
+    npm install
+
+3. Configure MongoDB
+
+    Update the database connection in:
+    server/db/index.js
+
+    Example:
+    mongodb://localhost:27017/password-manager
+
+4. Start the application
+
+    Backend:
+
+    cd server
+    node index.js
+
+    Frontend:
+
+    cd client
+    npm start
+
 ## Live Demo
 ![Live Demo](./client/src/pmdemo.gif)
-
-
-  
