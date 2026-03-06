@@ -26,7 +26,7 @@ Key features include:
 - Automated frontend and backend testing
 
 ## Architecture
-<img width="540" height="1177" alt="User Browser to MongoDB Flow" src="https://github.com/user-attachments/assets/40a9a439-7db9-4d97-9026-f3259758dc90" />
+<img width="270" height="589" alt="User Browser to MongoDB Flow" src="https://github.com/user-attachments/assets/5e97f39c-1942-4a3a-a788-85104098ac78" />
 
 
 ## Tech Stack
