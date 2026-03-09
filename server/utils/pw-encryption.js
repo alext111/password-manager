@@ -12,12 +12,15 @@
  * - Decrypt stored passwords when requested
  */
 
+require('dotenv').config({ path: '../.env'})
+
 const crypto = require("crypto")
 const algorithm = 'aes-256-ctr'
+const keypw = process.env.ENCRYPTION_KEY
 
-// Static key used for demonstration purposes only
-// In production, this must be stored securely
-const keypw = 'thisisfakekeyforthegithubversion'
+if (!keypw) {
+    throw new Error("ENCRYPTION_KEY is not defined in environment variables")
+}
 
 /**
  * Encrypt a plaintext password
