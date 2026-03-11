@@ -13,7 +13,7 @@ env:
 
 jobs:
   backend:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     env:
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
