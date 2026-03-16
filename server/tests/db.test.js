@@ -64,21 +64,6 @@ afterAll(async () => {
   await mongoServer.stop()
 })
 
-/*
-beforeAll(async () => {
-	await loginModel.deleteMany({})
-	
-	let loginObject1 = new loginModel(helper.initialLoginInfo[0])
-	await loginObject1.save()
-
-	let loginObject2 = new loginModel(helper.initialLoginInfo[1])
-	await loginObject2.save()
-})
-
-afterAll(() => {
-	mongoose.connection.close()
-})
-	*/
 
 /**
  * Test Group: Initial Database State
@@ -201,7 +186,9 @@ describe('Changing specific document', () => {
 
 		const encrypted = response.body.data.pw
 		const iv = response.body.data.iv
-		const decrypted = encryptor.decrypt({pw: encrypted, iv: iv})
+		const salt = response.body.data.salt
+		const decrypted = encryptor.decrypt({pw: encrypted, iv: iv, salt: salt})
+		
   
 		expect(decrypted).toBe(updateLogin.pw)
 	})

@@ -43,6 +43,7 @@ const LoginInfo = new Schema(
         website: { type: String, required: true },
         pw: { type: String, required: true},
         iv: { type: String, required: true},
+        salt: { type: String, required: true},
     },
     { timestamps: true },
 )

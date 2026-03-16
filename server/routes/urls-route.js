@@ -68,7 +68,7 @@ router.get('/login/:website', UrlController.getPasswordByWebsite)
  * Returns:
  * - Decrypted plaintext password
  */
-router.get('/decrypt/:pw/:iv', UrlController.decryptPassword)
+router.get('/decrypt/:website', UrlController.decryptPassword)
 
 /**
  * PUT /login/:website

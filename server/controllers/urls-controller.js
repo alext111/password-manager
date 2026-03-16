@@ -46,7 +46,7 @@ createLogins = async (req, res) => {
 
     const password = passwordGenerator.generatePassword()
     const encrypted = encryptor.encrypt(password)
-    const loginInfo = new LoginInfo({ website: website, pw: encrypted.pw, iv: encrypted.iv })
+    const loginInfo = new LoginInfo({ website: website, pw: encrypted.pw, iv: encrypted.iv, salt: encrypted.salt })
     
     try {
         await loginInfo.save()
@@ -70,26 +70,40 @@ createLogins = async (req, res) => {
  * Request Params:
  * - pw: encrypted password
  * - iv: initialization vector
+ * - salt: salt
  *
  * Response:
  * 200 - Decrypted password returned
  * 400 - Decryption failure
  */
 decryptPassword = async (req, res) => {
-    const encryption = { pw: req.params.pw, iv: req.params.iv }
-    const decryptedPassword = encryptor.decrypt(encryption)
+    try {
+        const login = await LoginInfo.findOne({ website: req.params.website })
 
-    if (!decryptedPassword) {
+        if (!login) {
+            return res.status(404).json({
+                success: false,
+                error: 'Website not found'
+            })
+        }
+
+        const decryptedPassword = encryptor.decrypt({
+            pw: login.pw,
+            iv: login.iv,
+            salt: login.salt
+        })
+
+        return res.status(200).json({
+            success: true,
+            data: decryptedPassword
+        })
+
+    } catch (err) {
         return res.status(400).json({
             success: false,
-            error: err,
+            error: err
         })
     }
-    
-    return res.status(200).json({
-        success: true, 
-        data: decryptedPassword
-    })
 }
 
 /**
@@ -164,7 +178,7 @@ getPasswordByWebsite = async (req, res) => {
  * Flow:
  * 1. Validate request body
  * 2. Encrypt new password
- * 3. Update encrypted password and IV in database
+ * 3. Update encrypted password, IV, and salt in database
  *
  * Request Body:
  * {
@@ -188,7 +202,7 @@ updatePassword = async (req, res) => {
     try {
         const result = await LoginInfo.updateOne(
             { website },
-            { pw: encrypted.pw, iv: encrypted.iv }
+            { pw: encrypted.pw, iv: encrypted.iv, salt: encrypted.salt }
         )
         if (result.matchedCount === 0) {
             return res.status(404).json({ success: false, error: 'Website not found' })

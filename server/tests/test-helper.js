@@ -44,12 +44,14 @@ const initialLoginInfo = [
     {
         website: 'Test1', 
         pw: encrypted1.pw, 
-        iv: encrypted1.iv
+        iv: encrypted1.iv,
+        salt: encrypted1.salt
     },
     {
         website: 'Test2', 
         pw: encrypted2.pw, 
-        iv: encrypted2.iv
+        iv: encrypted2.iv,
+        salt: encrypted1.salt
     }
 ]
 
