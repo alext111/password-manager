@@ -29,7 +29,7 @@ export const getLogins = () => api.get(`/logins/`)
 export const getLoginByWebsite = website => api.get(`/login/${website}`)
 export const updateLogin = (website, payload) => api.put(`/login/${website}`, payload)
 export const deleteLogin = website => api.delete(`/login/${website}`)
-export const decryptPassword = (pw, iv) => api.get(`/decrypt/${pw}/${iv}`)
+export const decryptPassword = website => api.get(`/decrypt/${website}`)
 
 const apis = {
     postLogin,

@@ -38,6 +38,7 @@ describe('LoginsFindAll', () => {
             website: 'test.com',
             pw: 'testpw',
             iv: 'testiv',
+            salt: 'testsalt'
           }
         ]
       }
@@ -81,6 +82,7 @@ describe('LoginsFindAll', () => {
             website: 'test.com',
             pw: 'testpw',
             iv: 'testiv',
+            salt: 'testsalt'
           }
         ]
       }
@@ -97,7 +99,7 @@ describe('LoginsFindAll', () => {
     const button = await screen.findByText('Show Password')
     userEvent.click(button)
 
-    expect(api.decryptPassword).toHaveBeenCalledWith('testpw', 'testiv')
+    expect(api.decryptPassword).toHaveBeenCalledWith('test.com')
 
     await waitFor(() =>
       expect(alertSpy).toHaveBeenCalledWith('decrypted-password')

@@ -80,13 +80,20 @@ class LoginsFindByWebsite extends Component {
 
     handleFindPassword = async () => {
         const website = this.state.website
-        const logins = await api.getLoginByWebsite(website)
-        const password = await api.decryptPassword(logins.data.data.pw, logins.data.data.iv)
-        window.alert('Login information successfully found')
-        this.setState({ 
-            pw: password.data.data,
-        })
+        if (!website) {
+            return window.alert('Please enter a website')
+        }
 
+        try {
+            // Call backend: GET /api/decrypt/:website
+            const res = await api.decryptPassword(website)
+            this.setState({ pw: res.data.data })
+            window.alert('Login information successfully found')
+        } catch (err) {
+            console.error(err)
+            window.alert('Could not find password for the specified website')
+            this.setState({ pw: '' })
+        }
     }
 
     render() {

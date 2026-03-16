@@ -43,9 +43,9 @@ const Delete = styled.div`
 `
 
 // Child component: decrypt password for a login
-const DecryptPassword = ({ pw, iv }) => {
+const DecryptPassword = ({ website }) => {
   const decryptPassword = async () => {
-    const res = await api.decryptPassword(pw, iv)
+    const res = await api.decryptPassword(website)
     window.alert(res.data.data)
   }
   return <Decrypt onClick={decryptPassword}>Show Password</Decrypt>
@@ -97,7 +97,7 @@ const LoginsFindAll = () => {
     }),
     columnHelper.display({
       id: 'decrypt',
-      cell: info => <DecryptPassword pw={info.row.original.pw} iv={info.row.original.iv} />,
+      cell: info => <DecryptPassword website={info.row.original.website} />,
     }),
     columnHelper.display({
       id: 'delete',

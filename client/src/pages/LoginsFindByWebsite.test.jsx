@@ -54,7 +54,7 @@ describe('LoginsFindByWebsite', () => {
     // Mock API responses
     api.getLoginByWebsite.mockResolvedValue({
       data: {
-        data: { pw: 'encryptedpw', iv: 'iv123' }
+        data: { website: 'example.com', pw: 'encrypted', iv: 'iv123', salt: 'salt123'}
       }
     })
     api.decryptPassword.mockResolvedValue({
@@ -72,8 +72,7 @@ describe('LoginsFindByWebsite', () => {
     userEvent.click(button)
 
     // Wait for API calls and state updates
-    await waitFor(() => expect(api.getLoginByWebsite).toHaveBeenCalledWith('example.com'))
-    await waitFor(() => expect(api.decryptPassword).toHaveBeenCalledWith('encryptedpw', 'iv123'))
+    await waitFor(() => expect(api.decryptPassword).toHaveBeenCalledWith('example.com'))
     await waitFor(() => expect(alertSpy).toHaveBeenCalledWith('Login information successfully found'))
 
     // Verify password is displayed in output
