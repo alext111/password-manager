@@ -189,7 +189,7 @@ describe('Changing specific document', () => {
 		const salt = response.body.data.salt
 		const decrypted = encryptor.decrypt({pw: encrypted, iv: iv, salt: salt})
 		
-  
+		expect(encrypted).not.toBe(updateLogin.pw) // not plaintext
 		expect(decrypted).toBe(updateLogin.pw)
 	})
 
@@ -242,3 +242,35 @@ describe('Deleting specific document', () => {
 	})
 })
 
+/**
+ * Test Group: Decrypting Password
+ * --------------------------------------------------
+ * Confirms passwords can be decrypted correctly and validates
+ * correct error handling
+ */
+describe('Decrypting password', () => {
+
+  test('Password is decrypted correctly for valid website', async () => {
+    const website = helper.initialLoginInfo[0].website
+
+    const response = await api
+      .get(`/api/decrypt/${website}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.data).toBeDefined()
+    expect(typeof response.body.data).toBe('string')
+  })
+
+  test('Decrypt fails for non-existent website', async () => {
+    await api
+      .get('/api/decrypt/nonexistent.com')
+      .expect(404)
+  })
+
+  test('Decrypt fails for empty website', async () => {
+    await api
+      .get('/api/decrypt/')
+      .expect(404)
+  })
+})
