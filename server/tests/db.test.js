@@ -34,6 +34,9 @@ let mongoServer
  * Test Setup & Teardown
  * --------------------------------------------------
  * beforeAll:
+ * - Create database connection
+ * 
+ * beforeEach:
  * - Clears database
  * - Seeds initial test documents
  *
@@ -47,7 +50,9 @@ beforeAll(async () => {
 
   // Connect mongoose to in-memory DB
   await mongoose.connect(mongoUri)
+})
 
+beforeEach(async () => {
   // Clear and seed DB
   await loginModel.deleteMany({})
 
@@ -103,7 +108,7 @@ describe('Posting new document', () => {
 
 	test('New document can be added', async () => {
 		const newLogin = {
-			website: 'TestWebsite'
+			website: 'NewWebsite'
 		}
   
 		await api
@@ -115,7 +120,7 @@ describe('Posting new document', () => {
 		const response = await api.get('/api/logins')
 		const websites = response.body.data.map(response => response.website)
   
-		expect(websites).toContain('TestWebsite')
+		expect(websites).toContain('NewWebsite')
 	})
   
 	test('Document with empty website will not be added', async () => {
@@ -139,7 +144,7 @@ describe('Getting specific document', () => {
 	
 	test('Specific document can be found', async () => {
 		const findLogin = {
-			website: 'TestWebsite'
+			website: 'TestWebsite1'
 		}
   
 		await api
@@ -170,7 +175,7 @@ describe('Changing specific document', () => {
 
 	test('Specific password can be changed' , async () => {
 		const updateLogin = {
-			website: 'TestWebsite',
+			website: 'TestWebsite1',
 			pw: 'newPassword'
 		}
   
@@ -181,7 +186,7 @@ describe('Changing specific document', () => {
   
 		const response = await api
 			.get(`/api/login/${updateLogin.website}`)
-			.send({website: 'TestWebsite'})
+			.send({website: 'TestWebsite1'})
 			.expect(200)
 
 		const encrypted = response.body.data.pw
@@ -196,13 +201,25 @@ describe('Changing specific document', () => {
 	test('Specific password will not be changed with empty website', async () => {
 		const updateLogin = {
 			website: '',
-			pw: ''
+			pw: 'TestPassword'
 		}
   
 		await api
 			.put(`/api/login/${updateLogin.website}`)
 			.send(updateLogin)
 			.expect(404)
+	})
+
+	test('Specific password will not be changed with empty password', async () => {
+		const updateLogin = {
+			website: 'TestWebsite1',
+			pw: ''
+		}
+  
+		await api
+			.put(`/api/login/${updateLogin.website}`)
+			.send(updateLogin)
+			.expect(400)
 	})
 })
 
@@ -216,7 +233,7 @@ describe('Deleting specific document', () => {
 
 	test('Document can be deleted', async () => {
 		const deleteLogin = {
-			website: 'TestWebsite'
+			website: 'TestWebsite1'
 		}
   
 		await api
@@ -227,7 +244,7 @@ describe('Deleting specific document', () => {
 		const response = await api.get('/api/logins')
 		const websites = response.body.data.map(response => response.website)
   
-		expect(websites).toHaveLength(2)
+		expect(websites).toHaveLength(1)
 	})
 
 	test('Document will not be deleted with empty website ', async () => {
