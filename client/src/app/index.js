@@ -13,7 +13,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { NavBar } from '../components'
-import { LoginsCreate, LoginsFindByWebsite, LoginsFindAll, LoginsUpdate } from '../pages'
+import { CredentialsCreate, CredentialsFindByWebsite, CredentialsFindAll, CredentialsUpdate } from '../pages'
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -26,10 +26,10 @@ function App() {
       
       {/* Route configuration */}
       <Switch>
-        <Route path="/login/create" exact component={LoginsCreate} />
-        <Route path="/login/find/" exact component={LoginsFindByWebsite} />
-        <Route path="/logins/all" exact component={LoginsFindAll} />
-        <Route path="/login/update/" exact component={LoginsUpdate} />
+        <Route path="/credentials/create" exact component={CredentialsCreate} />
+        <Route path="/credentials/find/" exact component={CredentialsFindByWebsite} />
+        <Route path="/credentials/all" exact component={CredentialsFindAll} />
+        <Route path="/credentials/update/" exact component={CredentialsUpdate} />
       </Switch>
     </Router>
   )

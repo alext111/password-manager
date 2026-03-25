@@ -1,19 +1,19 @@
 /**
- * LoginsUpdate.test.jsx
+ * CredentialsUpdate.test.jsx
  * ---------------------------------------------------------
- * Unit tests for LoginsUpdate Page Component
+ * Unit tests for CredentialsUpdate Page Component
  * 
  * Verifies the behavior of the "Update Password" page:
  * - Ensures website and password inputs update correctly
  * - Calls the API to update login information
  * - Shows alerts on successful password update
  * - Clears the input fields after update
- * - Ensures Cancel button navigates back to the "Find All Logins" page
+ * - Ensures Cancel button navigates back to the "Find All Credentials" page
  */
 
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LoginsUpdate from './LoginsUpdate'
+import CredentialsUpdate from './CredentialsUpdate'
 import api from '../api'
 
 jest.mock('../api')
@@ -22,7 +22,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-describe('LoginsUpdate', () => {
+describe('CredentialsUpdate', () => {
 
   /**
    * Test: Website input updates correctly
@@ -31,7 +31,7 @@ describe('LoginsUpdate', () => {
    * - Verifies input value is updated
    */
   test('updates website input as user types', () => {
-    render(<LoginsUpdate />)
+    render(<CredentialsUpdate />)
 
     const websiteInput = screen.getByPlaceholderText('e.g. Google')
     userEvent.type(websiteInput, 'example.com')
@@ -46,7 +46,7 @@ describe('LoginsUpdate', () => {
    * - Verifies input value is updated
    */
   test('updates password input as user types', () => {
-    render(<LoginsUpdate />)
+    render(<CredentialsUpdate />)
 
     const passwordInput = screen.getByPlaceholderText('e.g. examplepassword')
     userEvent.type(passwordInput, 'newpassword123')
@@ -64,11 +64,11 @@ describe('LoginsUpdate', () => {
    * - Verifies input fields are cleared after success
    */
   test('updates password successfully', async () => {
-    api.updateLogin.mockResolvedValue({})
+    api.updateCredentials.mockResolvedValue({})
 
     const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {})
 
-    render(<LoginsUpdate />)
+    render(<CredentialsUpdate />)
 
     const websiteInput = screen.getByPlaceholderText('e.g. Google')
     const passwordInput = screen.getByPlaceholderText('e.g. examplepassword')
@@ -79,7 +79,7 @@ describe('LoginsUpdate', () => {
     userEvent.click(updateButton)
 
     await waitFor(() =>
-      expect(api.updateLogin).toHaveBeenCalledWith('example.com', { website: 'example.com', pw: 'newpassword123' })
+      expect(api.updateCredentials).toHaveBeenCalledWith('example.com', { website: 'example.com', pw: 'newpassword123' })
     )
     await waitFor(() =>
       expect(alertSpy).toHaveBeenCalledWith('Password successfully changed and encrypted.')
@@ -93,14 +93,14 @@ describe('LoginsUpdate', () => {
   })
 
   /**
-   * Test: Cancel button navigates to /logins/all
+   * Test: Cancel button navigates to /credentials/all
    * - Verifies the Cancel button has correct href
    */
-  test('Cancel button navigates to /logins/all', () => {
-    render(<LoginsUpdate />)
+  test('Cancel button navigates to /credentials/all', () => {
+    render(<CredentialsUpdate />)
 
     const cancelButton = screen.getByRole('link', { name: /cancel/i })
-    expect(cancelButton).toHaveAttribute('href', '/logins/all')
+    expect(cancelButton).toHaveAttribute('href', '/credentials/all')
   })
 
 })

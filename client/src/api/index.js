@@ -24,19 +24,19 @@ const api = axios.create({
 })
  
 // Login routes
-export const postLogin = payload => api.post(`/login/`, payload)
-export const getLogins = () => api.get(`/logins/`)
-export const getLoginByWebsite = website => api.get(`/login/${website}`)
-export const updateLogin = (website, payload) => api.put(`/login/${website}`, payload)
-export const deleteLogin = website => api.delete(`/login/${website}`)
+export const postCredentials = payload => api.post(`/credentials/`, payload)
+export const getCredentials = () => api.get(`/credentials/`)
+export const getCredentialsByWebsite = website => api.get(`/credentials/${website}`)
+export const updateCredentials = (website, payload) => api.put(`/credentials/${website}`, payload)
+export const deleteCredentials = website => api.delete(`/credentials/${website}`)
 export const decryptPassword = website => api.get(`/decrypt/${website}`)
 
 const apis = {
-    postLogin,
-    getLogins,
-    getLoginByWebsite,
-    updateLogin,
-    deleteLogin,
+    postCredentials,
+    getCredentials,
+    getCredentialsByWebsite,
+    updateCredentials,
+    deleteCredentials,
     decryptPassword,
 }
 

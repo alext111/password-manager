@@ -1,5 +1,5 @@
 /**
- * LoginsFindAll Page Component
+ * CredentialsFindAll Page Component
  * ---------------------------------------------------------
  * Displays all saved login credentials in a table format.
  *
@@ -55,27 +55,27 @@ const DecryptPassword = ({ website }) => {
 const DeleteLogin = ({ website }) => {
   const deleteLogin = async () => {
     if (window.confirm(`Do you want to delete ${website} login information?`)) {
-      await api.deleteLogin(website)
+      await api.deleteCredentials(website)
       window.location.reload()
     }
   }
   return <Delete onClick={deleteLogin}>Delete</Delete>
 }
 
-// Main component: displays all logins in a table
-const LoginsFindAll = () => {
-  const [logins, setLogins] = useState([])
+// Main component: displays all Credentials in a table
+const CredentialsFindAll = () => {
+  const [credentials, setCredentials] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
-  // Fetch all logins from backend on component mount
+  // Fetch all credentials from backend on component mount
   useEffect(() => {
-    const fetchLogins = async () => {
+    const fetchCredentials = async () => {
       setIsLoading(true)
-      const res = await api.getLogins()
-      setLogins(res.data.data)
+      const res = await api.getCredentials()
+      setCredentials(res.data.data)
       setIsLoading(false)
     }
-    fetchLogins()
+    fetchCredentials()
   }, [])
 
   const formatDate = (date) =>
@@ -107,14 +107,14 @@ const LoginsFindAll = () => {
 
   // Initialize the table with rows, columns, and row model
   const table = useReactTable({
-    data: logins,
+    data: credentials,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
 
   return (
     <Wrapper>
-      {logins.length > 0 && (
+      {credentials.length > 0 && (
         <table className="table table-striped table-bordered table-hover">
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -151,4 +151,4 @@ const LoginsFindAll = () => {
 }
 
 
-export default LoginsFindAll
+export default CredentialsFindAll

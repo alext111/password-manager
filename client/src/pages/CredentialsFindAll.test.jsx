@@ -1,11 +1,11 @@
 /**
- * LoginsFindAll.test.jsx
+ * CredentialsFindAll.test.jsx
  * ---------------------------------------------------------
- * Unit tests for the LoginsFindAll Page component
+ * Unit tests for the CredentialsFindAll Page component
  *
  * Responsibilities:
  * - Ensure that the login table renders correctly with data
- * - Verify that the component behaves correctly when there are no logins
+ * - Verify that the component behaves correctly when there are no credentials
  * - Test the "Show Password" button triggers decryption and displays an alert
  * - Test the "Delete" button calls the API and reloads the page when confirmed
  */
@@ -13,7 +13,7 @@
 
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LoginsFindAll from './LoginsFindAll'
+import CredentialsFindAll from './CredentialsFindAll'
 import api from '../api'
 
 // Mock the api module
@@ -23,15 +23,15 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-describe('LoginsFindAll', () => {
+describe('CredentialsFindAll', () => {
 
   /**
-   * Test: Table renders correctly when logins exist
+   * Test: Table renders correctly when credentials exist
    * - Mocks API to return a single login
    * - Checks that website, "Show Password", and "Delete" buttons appear
    */
-  test('renders table with login data', async () => {
-    api.getLogins.mockResolvedValue({
+  test('renders table with credential data', async () => {
+    api.getCredentials.mockResolvedValue({
       data: {
         data: [
           {
@@ -44,7 +44,7 @@ describe('LoginsFindAll', () => {
       }
     })
 
-    render(<LoginsFindAll />)
+    render(<CredentialsFindAll />)
 
     expect(await screen.findByText('test.com')).toBeInTheDocument()
     expect(screen.getByText('Show Password')).toBeInTheDocument()
@@ -52,16 +52,16 @@ describe('LoginsFindAll', () => {
   })
 
   /**
-   * Test: Component renders empty state when no logins exist
+   * Test: Component renders empty state when no credentials exist
    * - Mocks API to return an empty array
    * - Checks that the table element is not present
    */
-  test('renders empty state when no logins exist', async () => {
-    api.getLogins.mockResolvedValue({
+  test('renders empty state when no credentials exist', async () => {
+    api.getCredentials.mockResolvedValue({
       data: { data: [] }
     })
 
-    render(<LoginsFindAll />)
+    render(<CredentialsFindAll />)
 
     await waitFor(() =>
       expect(screen.queryByRole('table')).not.toBeInTheDocument()
@@ -75,7 +75,7 @@ describe('LoginsFindAll', () => {
    * - Simulates user clicking "Show Password"
    */
   test('decrypt button calls api and shows alert', async () => {
-    api.getLogins.mockResolvedValue({
+    api.getCredentials.mockResolvedValue({
       data: {
         data: [
           {
@@ -94,7 +94,7 @@ describe('LoginsFindAll', () => {
 
     const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {})
 
-    render(<LoginsFindAll />)
+    render(<CredentialsFindAll />)
 
     const button = await screen.findByText('Show Password')
     userEvent.click(button)
@@ -116,7 +116,7 @@ describe('LoginsFindAll', () => {
    * - Simulates user clicking "Delete" button
    */
   test('delete button calls api when confirmed', async () => {
-    api.getLogins.mockResolvedValue({
+    api.getCredentials.mockResolvedValue({
       data: {
         data: [
           {
@@ -128,7 +128,7 @@ describe('LoginsFindAll', () => {
       }
     })
 
-    api.deleteLogin.mockResolvedValue({})
+    api.deleteCredentials.mockResolvedValue({})
 
     jest.spyOn(window, 'confirm').mockReturnValue(true)
 
@@ -137,12 +137,12 @@ describe('LoginsFindAll', () => {
     delete window.location
     window.location = { reload: jest.fn() }
 
-    render(<LoginsFindAll />)
+    render(<CredentialsFindAll />)
 
     const deleteButton = await screen.findByText('Delete')
     userEvent.click(deleteButton)
 
-    await waitFor(() => expect(api.deleteLogin).toHaveBeenCalledWith('test.com'))
+    await waitFor(() => expect(api.deleteCredentials).toHaveBeenCalledWith('test.com'))
     await waitFor(() => expect(window.location.reload).toHaveBeenCalled())
 
     window.location = originalLocation

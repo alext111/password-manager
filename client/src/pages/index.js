@@ -11,9 +11,9 @@
  *   import { LoginsCreate, LoginsFindAll } from '../pages'
  */
 
-import LoginsCreate from "./LoginsCreate"
-import LoginsFindByWebsite from "./LoginsFindByWebsite"
-import LoginsFindAll from "./LoginsFindAll"
-import LoginsUpdate from "./LoginsUpdate"
+import CredentialsCreate from "./CredentialsCreate"
+import CredentialsFindByWebsite from "./CredentialsFindByWebsite"
+import CredentialsFindAll from "./CredentialsFindAll"
+import CredentialsUpdate from "./CredentialsUpdate"
 
-export { LoginsCreate, LoginsFindByWebsite, LoginsFindAll, LoginsUpdate }
+export { CredentialsCreate, CredentialsFindByWebsite, CredentialsFindAll, CredentialsUpdate }

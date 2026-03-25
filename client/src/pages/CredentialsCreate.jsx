@@ -1,5 +1,5 @@
 /**
- * LoginsCreate Page Component
+ * CredentialsCreate Page Component
  * ---------------------------------------------------------
  * Provides a form for creating new login credentials for a website.
  *
@@ -13,7 +13,7 @@
  * Notes:
  * - Uses styled-components for consistent layout and Bootstrap styling
  * - Interacts with the API layer (../api) for CRUD operations
- * - Navigation via Cancel button returns to the "Find All Logins" page
+ * - Navigation via Cancel button returns to the "Find All Credentials" page
  */
 
 import React, { Component } from 'react'
@@ -57,7 +57,7 @@ const CancelButton = styled.a.attrs({
 `
 
 //generate and encrypt password for new website
-class LoginsCreate extends Component {
+class CredentialsCreate extends Component {
     
     constructor(props) {
         super(props)
@@ -71,20 +71,24 @@ class LoginsCreate extends Component {
     }
 
     // Handle the "Generate Password" button click
-    handleGenerateLogins = async () => {
+    handleGenerateCredentials = async () => {
         const { website } = this.state
         const payload = { website }
 
-        // Check if login info already exists
+        if (!website) {
+            return window.alert('Please enter a website')
+        }
+
+        // Check if credentials already exists
         try {
-            await api.getLoginByWebsite(website).then(res => {
-                window.alert('Login information already exists')
+            await api.getCredentialsByWebsite(website).then(res => {
+                window.alert('Credentials already exists')
             })
         }
         catch {
             // If not, create new login info
-            api.postLogin(payload).then(res => {
-                window.alert('Login information successfully created')
+            api.postCredentials(payload).then(res => {
+                window.alert('Credentials successfully created')
                 this.setState({ website: ''})
                 })
             }
@@ -106,10 +110,10 @@ class LoginsCreate extends Component {
                     value={website}
                     onChange={this.handleChangeWebsite}
                 />
-                <Button onClick={this.handleGenerateLogins}>
+                <Button onClick={this.handleGenerateCredentials}>
                     Generate Password
                 </Button>
-                <CancelButton href={'/logins/all'}>
+                <CancelButton href={'/credentials/all'}>
                     Cancel
                 </CancelButton>
             </Wrapper>
@@ -118,4 +122,4 @@ class LoginsCreate extends Component {
 
 }
 
-export default LoginsCreate
+export default CredentialsCreate

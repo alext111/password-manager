@@ -1,5 +1,5 @@
 /**
- * LoginsUpdate Page Component
+ * CredentialsUpdate Page Component
  * ---------------------------------------------------------
  * Provides a form to update the password for a specific website.
  *
@@ -12,7 +12,7 @@
  *
  * Notes:
  * - Uses styled-components for layout and Bootstrap styling
- * - Cancel button navigates back to the "Find All Logins" page
+ * - Cancel button navigates back to the "Find All Credentials" page
  * - Ensures password management functionality is clear and modular
  */
 
@@ -56,7 +56,7 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
-class LoginsUpdate extends Component {
+class CredentialsUpdate extends Component {
     
     constructor(props) {
         super(props)
@@ -77,7 +77,7 @@ class LoginsUpdate extends Component {
         const { website, pw } = this.state
         const payload = { website, pw }
 
-        await api.updateLogin(website, payload).then(res => {
+        await api.updateCredentials(website, payload).then(res => {
             window.alert('Password successfully changed and encrypted.')
             this.setState({ website: '', pw: ''})
         })
@@ -113,7 +113,7 @@ class LoginsUpdate extends Component {
                 <Button onClick={this.handleUpdatePassword}>
                     Update Password
                 </Button>
-                <CancelButton href={'/logins/all'}>
+                <CancelButton href={'/credentials/all'}>
                     Cancel
                 </CancelButton>
             </Wrapper>
@@ -122,4 +122,4 @@ class LoginsUpdate extends Component {
 
 }
 
-export default LoginsUpdate
+export default CredentialsUpdate

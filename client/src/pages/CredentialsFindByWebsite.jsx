@@ -1,5 +1,5 @@
 /**
- * LoginsFindByWebsite Page Component
+ * CredentialsFindByWebsite Page Component
  * ---------------------------------------------------------
  * Provides a form to search for a saved password by website.
  *
@@ -13,7 +13,7 @@
  * Notes:
  * - Uses styled-components for consistent layout and Bootstrap styling
  * - Window alert used for user feedback
- * - Cancel button navigates back to the "Find All Logins" page
+ * - Cancel button navigates back to the "Find All Credentials" page
  */
 
 import React, { Component } from 'react'
@@ -64,7 +64,7 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
-class LoginsFindByWebsite extends Component {
+class CredentialsFindByWebsite extends Component {
     constructor(props) {
         super(props)
         this.state = { 
@@ -125,7 +125,7 @@ class LoginsFindByWebsite extends Component {
                 <Button onClick={this.handleFindPassword}>
                     Find Password
                 </Button>
-                <CancelButton href={'/logins/all'}>
+                <CancelButton href={'/credentials/all'}>
                     Cancel
                 </CancelButton>
             </Wrapper>
@@ -133,4 +133,4 @@ class LoginsFindByWebsite extends Component {
     }
 }
 
-export default LoginsFindByWebsite
+export default CredentialsFindByWebsite
