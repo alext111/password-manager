@@ -17,7 +17,7 @@
  *   database entries.
  */
 
-const loginModel = require('../models/logins-model')
+const loginModel = require('../models/credentials-model')
 const passwordGenerator = require('../utils/pw-generator')
 const encryptor = require('../utils/pw-encryption')
 

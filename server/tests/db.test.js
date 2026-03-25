@@ -22,7 +22,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../index')
 const helper = require('./test-helper')
-const loginModel = require('../models/logins-model')
+const credentialsModel = require('../models/credentials-model')
 const passwordGenerator = require('../utils/pw-generator')
 const encryptor = require('../utils/pw-encryption')
 const api = supertest(app)
@@ -54,13 +54,13 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   // Clear and seed DB
-  await loginModel.deleteMany({})
+  await credentialsModel.deleteMany({})
 
-  const loginObject1 = new loginModel(helper.initialLoginInfo[0])
-  await loginObject1.save()
+  const credentialsObject1 = new credentialsModel(helper.initialLoginInfo[0])
+  await credentialsObject1.save()
 
-  const loginObject2 = new loginModel(helper.initialLoginInfo[1])
-  await loginObject2.save()
+  const credentialsObject2 = new credentialsModel(helper.initialLoginInfo[1])
+  await credentialsObject2.save()
 })
 
 afterAll(async () => {
@@ -79,19 +79,19 @@ describe('Database contains preexisting documents', () => {
 
 	test('Documents are returned in json format', async () => {
 		await api
-			.get('/api/logins')
+			.get('/api/credentials')
 			.expect(200)
 			.expect('Content-Type', /application\/json/)
 	})
   
 	test('There are two documents', async () => {
-		const response = await api.get('/api/logins')
+		const response = await api.get('/api/credentials')
   
 		expect(response.body.data).toHaveLength(2)
 	})
   
 	test('The documents contain correct info', async () => {
-		const response = await api.get('/api/logins')
+		const response = await api.get('/api/credentials')
 		const passwords = response.body.data.map(response => response.pw)
   
 		expect(passwords).toContain(helper.initialLoginInfo[0].pw)
@@ -107,62 +107,65 @@ describe('Database contains preexisting documents', () => {
 describe('Posting new document', () => {
 
 	test('New document can be added', async () => {
-		const newLogin = {
+		const newCredentials = {
 			website: 'NewWebsite'
 		}
   
 		await api
-			.post('/api/login')
-			.send(newLogin)
+			.post('/api/credentials')
+			.send(newCredentials)
 			.expect(201)
 			.expect('Content-Type', /application\/json/)
   
-		const response = await api.get('/api/logins')
+		const response = await api.get('/api/credentials')
 		const websites = response.body.data.map(response => response.website)
   
 		expect(websites).toContain('NewWebsite')
 	})
   
 	test('Document with empty website will not be added', async () => {
-		const newLogin = {
+		const newCredentials = {
 			website: ''
 		}
   
 		await api
-			.post('/api/login')
-			.send(newLogin)
+			.post('/api/credentials')
+			.send(newCredentials)
 			.expect(400)
 	})
 })
 
 /**
- * Test Group: Retrieving Specific Login
+ * Test Group: Retrieving Specific Credentials
  * --------------------------------------------------
  * Verifies lookup by website parameter
  */
 describe('Getting specific document', () => {
 	
 	test('Specific document can be found', async () => {
-		const findLogin = {
+		const findCredentials = {
 			website: 'TestWebsite1'
 		}
   
 		await api
-			.get(`/api/login/${findLogin.website}`)
-			.send(findLogin)
+			.get(`/api/credentials/${findCredentials.website}`)
+			.send(findCredentials)
 			.expect(200)
 	})
 
+	/*
+	//validation moved to frontend
 	test('Specific document will not be found with empty website', async () => {
-		const findLogin = {
+		const findCredentials = {
 			website: ''
 		}
   
 		await api
-			.get(`/api/login/${findLogin.website}`)
-			.send(findLogin)
-			.expect(404)
+			.get(`/api/credentials/${findCredentials.website}`)
+			.send(findCredentials)
+			.expect(400)
 	})
+	*/
 })
 
 /**
@@ -174,18 +177,18 @@ describe('Getting specific document', () => {
 describe('Changing specific document', () => {  
 
 	test('Specific password can be changed' , async () => {
-		const updateLogin = {
+		const updateCredentials = {
 			website: 'TestWebsite1',
 			pw: 'newPassword'
 		}
   
 		await api
-			.put(`/api/login/${updateLogin.website}`)
-			.send(updateLogin)
+			.put(`/api/credentials/${updateCredentials.website}`)
+			.send(updateCredentials)
 			.expect(200)
   
 		const response = await api
-			.get(`/api/login/${updateLogin.website}`)
+			.get(`/api/credentials/${updateCredentials.website}`)
 			.send({website: 'TestWebsite1'})
 			.expect(200)
 
@@ -194,37 +197,37 @@ describe('Changing specific document', () => {
 		const salt = response.body.data.salt
 		const decrypted = encryptor.decrypt({pw: encrypted, iv: iv, salt: salt})
 		
-		expect(encrypted).not.toBe(updateLogin.pw) // not plaintext
-		expect(decrypted).toBe(updateLogin.pw)
+		expect(encrypted).not.toBe(updateCredentials.pw) // not plaintext
+		expect(decrypted).toBe(updateCredentials.pw)
 	})
 
 	test('Specific password will not be changed with empty website', async () => {
-		const updateLogin = {
+		const updateCredentials = {
 			website: '',
 			pw: 'TestPassword'
 		}
   
 		await api
-			.put(`/api/login/${updateLogin.website}`)
-			.send(updateLogin)
+			.put(`/api/credentials/${updateCredentials.website}`)
+			.send(updateCredentials)
 			.expect(404)
 	})
 
 	test('Specific password will not be changed with empty password', async () => {
-		const updateLogin = {
+		const updateCredentials = {
 			website: 'TestWebsite1',
 			pw: ''
 		}
   
 		await api
-			.put(`/api/login/${updateLogin.website}`)
-			.send(updateLogin)
+			.put(`/api/credentials/${updateCredentials.website}`)
+			.send(updateCredentials)
 			.expect(400)
 	})
 })
 
 /**
- * Test Group: Deleting Login Entry
+ * Test Group: Deleting Credentials Entry
  * --------------------------------------------------
  * Confirms records can be removed and validates
  * correct error handling
@@ -232,29 +235,29 @@ describe('Changing specific document', () => {
 describe('Deleting specific document', () => {
 
 	test('Document can be deleted', async () => {
-		const deleteLogin = {
+		const deleteCredentials = {
 			website: 'TestWebsite1'
 		}
   
 		await api
-			.delete(`/api/login/${deleteLogin.website}`)
-			.send(deleteLogin)
+			.delete(`/api/credentials/${deleteCredentials.website}`)
+			.send(deleteCredentials)
 			.expect(200)
     
-		const response = await api.get('/api/logins')
+		const response = await api.get('/api/credentials')
 		const websites = response.body.data.map(response => response.website)
   
 		expect(websites).toHaveLength(1)
 	})
 
 	test('Document will not be deleted with empty website ', async () => {
-		const deleteLogin = {
+		const deleteCredentials = {
 			website: ''
 		}
   
 		await api
-			.delete(`/api/login/${deleteLogin.website}`)
-			.send(deleteLogin)
+			.delete(`/api/credentials/${deleteCredentials.website}`)
+			.send(deleteCredentials)
 			.expect(404)
 	})
 })

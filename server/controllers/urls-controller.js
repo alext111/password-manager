@@ -2,22 +2,129 @@
  * URL / Login Controllers
  * ---------------------------------------------------------
  * This module contains controller functions for managing
- * login entries within the password manager application.
+ * credentials entries within the password manager application.
  *
  * Responsibilities:
+ * - Register new user in MongoDB
  * - Generate and encrypt passwords
- * - Store encrypted login data in MongoDB
+ * - Store encrypted credentials data in MongoDB
  * - Retrieve and decrypt stored passwords
- * - Update and delete login records
+ * - Update and delete credentials records
  *
  */
 
-const LoginInfo = require('../models/logins-model')
+const CredentialsSchema = require('../models/credentials-model')
 const passwordGenerator = require('../utils/pw-generator')
 const encryptor = require('../utils/pw-encryption')
 
+const bcrypt = require('bcrypt')
+const User = require('../models/user-model')
+
+const jwt = require('jsonwebtoken')
+
+register = async (req, res) => {
+  try {
+    const { username, password } = req.body
+
+    // Validate input
+    if (!username || !password) {
+      return res.status(400).json({
+        success: false,
+        error: 'Username and password are required'
+      })
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        error: 'Password must be at least 6 characters'
+      })
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ username })
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        error: 'Username already exists'
+      })
+    }
+
+    // Hash password
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    // Create new user
+    const newUser = new User({
+      username,
+      passwordHash
+    })
+
+    await newUser.save()
+
+    return res.status(201).json({
+      success: true,
+      message: 'User created successfully'
+    })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({
+      success: false,
+      error: 'Server error'
+    })
+  }
+}
+
+credentials = async (req, res) => {
+  try {
+    const { username, password } = req.body
+
+    const user = await User.findOne({ username })
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid username or password'
+      })
+    }
+
+    const passwordCorrect = await bcrypt.compare(password, user.passwordHash)
+
+    if (!passwordCorrect) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid username or password'
+      })
+    }
+
+    // Create JWT
+    const userForToken = {
+      id: user._id,
+      username: user.username
+    }
+
+    const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+      expiresIn: '1h'
+    })
+
+    res.status(200).json({
+      success: true,
+      token,
+      username: user.username
+    })
+
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({
+      success: false,
+      error: 'Server error'
+    })
+  }
+}
+
+
 /**
- * Create a new login entry
+ * Create a new credential entry
  *
  * Flow:
  * 1. Validate website input
@@ -34,7 +141,7 @@ const encryptor = require('../utils/pw-encryption')
  * 201 - Created
  * 400 - Validation or database error
  */
-createLogins = async (req, res) => {
+createCredentials = async (req, res) => {
     const website = req.body.website
     
     if (!website) {
@@ -46,13 +153,13 @@ createLogins = async (req, res) => {
 
     const password = passwordGenerator.generatePassword()
     const encrypted = encryptor.encrypt(password)
-    const loginInfo = new LoginInfo({ website: website, pw: encrypted.pw, iv: encrypted.iv, salt: encrypted.salt })
+    const credentials = new CredentialsSchema({ website: website, pw: encrypted.pw, iv: encrypted.iv, salt: encrypted.salt })
     
     try {
-        await loginInfo.save()
+        await credentials.save()
         return res.status(201).json({
             success: true,
-            id: loginInfo._id,
+            id: CredentialsSchema._id,
             message: 'Website added and password generated',
         })
     } catch (error) {
@@ -78,9 +185,9 @@ createLogins = async (req, res) => {
  */
 decryptPassword = async (req, res) => {
     try {
-        const login = await LoginInfo.findOne({ website: req.params.website })
+        const credentials = await CredentialsSchema.findOne({ website: req.params.website })
 
-        if (!login) {
+        if (!credentials) {
             return res.status(404).json({
                 success: false,
                 error: 'Website not found'
@@ -88,9 +195,9 @@ decryptPassword = async (req, res) => {
         }
 
         const decryptedPassword = encryptor.decrypt({
-            pw: login.pw,
-            iv: login.iv,
-            salt: login.salt
+            pw: credentials.pw,
+            iv: credentials.iv,
+            salt: credentials.salt
         })
 
         return res.status(200).json({
@@ -117,9 +224,9 @@ decryptPassword = async (req, res) => {
  * 400 - Database error
  * 404 - Website not found
  */
-deleteLogins = async (req, res) => {
+deleteCredentials = async (req, res) => {
     try {
-        const result = await LoginInfo.deleteOne({ website: req.params.website })
+        const result = await CredentialsSchema.deleteOne({ website: req.params.website })
         if (result.deletedCount === 0) {
             return res.status(404).json({ success: false, error: 'Website not found' })
         }
@@ -137,12 +244,17 @@ deleteLogins = async (req, res) => {
  * 400 - Database error
  * 404 - Website records not found
  */
-getLogins = async (req, res) => {
+getAllCredentials = async (req, res) => {
     try {
-        const websites = await LoginInfo.find({})
+        const websites = await CredentialsSchema.find({})
+        
+
+        /*
+        //leads to page crash
         if (!websites.length) {
             return res.status(404).json({ success: false, error: 'No websites found' })
         }
+        */
         return res.status(200).json({ success: true, data: websites })
     } catch (err) {
         return res.status(400).json({ success: false, error: err })
@@ -161,12 +273,21 @@ getLogins = async (req, res) => {
  * 404 - Website not found
  */
 getPasswordByWebsite = async (req, res) => {
+    const website = req.params.website
+
+    if (!website || website.trim() === '') {
+        return res.status(400).json({
+            success: false,
+            error: 'Website is required'
+        })
+    }
+
     try {
-        const logins = await LoginInfo.findOne({ website: req.params.website })
-        if (!logins) {
+        const credentials = await CredentialsSchema.findOne({ website: req.params.website })
+        if (!credentials) {
             return res.status(404).json({ success: false, error: 'Website not found' })
         }
-        return res.status(200).json({ success: true, data: logins })
+        return res.status(200).json({ success: true, data: credentials })
     } catch (err) {
         return res.status(400).json({ success: false, error: err })
     }
@@ -200,7 +321,7 @@ updatePassword = async (req, res) => {
     const encrypted = encryptor.encrypt(pw)
 
     try {
-        const result = await LoginInfo.updateOne(
+        const result = await CredentialsSchema.updateOne(
             { website },
             { pw: encrypted.pw, iv: encrypted.iv, salt: encrypted.salt }
         )
@@ -214,10 +335,10 @@ updatePassword = async (req, res) => {
 }
 
 module.exports = {
-    createLogins,
+    createCredentials,
     decryptPassword,
-    getLogins,
+    getAllCredentials,
     getPasswordByWebsite,
     updatePassword,
-    deleteLogins
+    deleteCredentials
 }

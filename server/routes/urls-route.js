@@ -19,9 +19,18 @@
 const express = require('express')
 const UrlController = require('../controllers/urls-controller')
 const router = express.Router()
+//const authMiddleware = require('../middleware/auth-middleware')
 
 /**
- * POST /login
+ * POST /register
+ *
+ * Register new user
+ * 
+ */
+//router.post('/register', UrlController.register)
+
+/**
+ * POST /credentials
  *
  * Create a new login entry
  * - Generates a password
@@ -33,27 +42,27 @@ const router = express.Router()
  *   website: string
  * }
  */
-router.post('/login', UrlController.createLogins)
+router.post('/credentials', UrlController.createCredentials)
 
 /**
- * GET /logins
+ * GET /credentials
  *
  * Retrieve all stored login entries
  *
  * Returns:
  * - Array of login records (encrypted passwords)
  */
-router.get('/logins', UrlController.getLogins)
+router.get('/credentials', UrlController.getAllCredentials)
 
 /**
- * GET /login/:website
+ * GET /credentials/:website
  *
  * Retrieve login entry by website identifier
  *
  * Params:
  * - website: string
  */
-router.get('/login/:website', UrlController.getPasswordByWebsite)
+router.get('/credentials/:website', UrlController.getPasswordByWebsite)
 
 /**
  * GET /decrypt/:pw/:iv
@@ -71,7 +80,7 @@ router.get('/login/:website', UrlController.getPasswordByWebsite)
 router.get('/decrypt/:website', UrlController.decryptPassword)
 
 /**
- * PUT /login/:website
+ * PUT /credentials/:website
  *
  * Update password for a specific website
  *
@@ -81,16 +90,16 @@ router.get('/decrypt/:website', UrlController.decryptPassword)
  *   pw: string
  * }
  */
-router.put('/login/:website', UrlController.updatePassword)
+router.put('/credentials/:website', UrlController.updatePassword)
 
 /**
- * DELETE /login/:website
+ * DELETE /credentials/:website
  *
  * Delete login entry by website identifier
  *
  * Params:
  * - website: string
  */
-router.delete('/login/:website', UrlController.deleteLogins)
+router.delete('/credentials/:website', UrlController.deleteCredentials)
 
 module.exports = router
