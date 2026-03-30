@@ -8,12 +8,14 @@
  * - Provides a single entry point for all pages
  *
  * Example usage in App.js:
- *   import { LoginsCreate, LoginsFindAll } from '../pages'
+ *   import { CredentialsCreate, CredentialsFindByWebsite } from '../pages'
  */
 
 import CredentialsCreate from "./CredentialsCreate"
 import CredentialsFindByWebsite from "./CredentialsFindByWebsite"
 import CredentialsFindAll from "./CredentialsFindAll"
 import CredentialsUpdate from "./CredentialsUpdate"
+import Login from "./Login"
+import Register from "./Register"
 
-export { CredentialsCreate, CredentialsFindByWebsite, CredentialsFindAll, CredentialsUpdate }
+export { CredentialsCreate, CredentialsFindByWebsite, CredentialsFindAll, CredentialsUpdate, Login, Register }

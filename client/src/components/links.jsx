@@ -16,6 +16,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { isAuthenticated, logout } from '../utils/auth'
 
 // Styled components for Bootstrap navbar structure
 const Collapse = styled.div.attrs({
@@ -32,6 +33,8 @@ const Item = styled.div.attrs({
 
 class Links extends Component {
     render() {
+        const loggedIn = isAuthenticated()
+
         return (
             <React.Fragment>
                 <Link to="/" className="navbar-brand">
@@ -39,26 +42,52 @@ class Links extends Component {
                 </Link>
                 <Collapse>
                     <List>
-                        <Item>
-                            <Link to="/credentials/create" className="nav-link">
-                                Create Password
-                            </Link>
-                        </Item>
-                        <Item>
-                            <Link to="/credentials/find" className="nav-link">
-                                Find Password By Url
-                            </Link>
-                        </Item>
-                        <Item>
-                            <Link to="/credentials/all" className="nav-link">
-                                Find All Logins
-                            </Link>
-                        </Item>
-                        <Item>
-                            <Link to="/credentials/update" className="nav-link">
-                                Update Password
-                            </Link>
-                        </Item>
+                        {loggedIn && (
+                            <>
+                                <Item>
+                                    <Link to="/credentials/create" className="nav-link">
+                                        Create Password
+                                    </Link>
+                                </Item>
+                                <Item>
+                                    <Link to="/credentials/find" className="nav-link">
+                                        Find Password By Url
+                                    </Link>
+                                </Item>
+                                <Item>
+                                    <Link to="/credentials/all" className="nav-link">
+                                        Find All Logins
+                                    </Link>
+                                </Item>
+                                <Item>
+                                    <Link to="/credentials/update" className="nav-link">
+                                        Update Password
+                                    </Link>
+                                </Item>
+                                <Item>
+                                    <Link to="/login" className="nav-link" onClick={() => {
+                                        logout()
+                                    }}>
+                                        Logout
+                                    </Link>
+                                </Item>
+                                </>
+                        )}
+
+                        {!loggedIn && (
+                            <>
+                                <Item>
+                                    <Link to="/login" className="nav-link">
+                                        Login
+                                    </Link>
+                                </Item>
+                                <Item>
+                                    <Link to="/register" className="nav-link">
+                                        Register New User
+                                    </Link>
+                                </Item>
+                            </>
+                        )}
                     </List>
                 </Collapse>
             </React.Fragment>

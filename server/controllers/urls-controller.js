@@ -18,11 +18,14 @@ const passwordGenerator = require('../utils/pw-generator')
 const encryptor = require('../utils/pw-encryption')
 
 const bcrypt = require('bcrypt')
-//const User = require('../models/user-model')
+const User = require('../models/user-model')
 
 const jwt = require('jsonwebtoken')
 
-register = async (req, res) => {
+/**
+ * Register a new user
+ */
+registerUser = async (req, res) => {
   try {
     const { username, password } = req.body
 
@@ -76,7 +79,10 @@ register = async (req, res) => {
   }
 }
 
-credentials = async (req, res) => {
+/**
+ * Validate user login and create JWT authentication token
+ */
+loginUser = async (req, res) => {
   try {
     const { username, password } = req.body
 
@@ -110,7 +116,8 @@ credentials = async (req, res) => {
     res.status(200).json({
       success: true,
       token,
-      username: user.username
+      username: user.username,
+      id: user._id
     })
 
   } catch (error) {
@@ -153,13 +160,19 @@ createCredentials = async (req, res) => {
 
     const password = passwordGenerator.generatePassword()
     const encrypted = encryptor.encrypt(password)
-    const credentials = new CredentialsSchema({ website: website, pw: encrypted.pw, iv: encrypted.iv, salt: encrypted.salt })
+    const credentials = new CredentialsSchema({
+        website,
+        pw: encrypted.pw,
+        iv: encrypted.iv,
+        salt: encrypted.salt,
+        userId: req.user.id
+    })  
     
     try {
         await credentials.save()
         return res.status(201).json({
             success: true,
-            id: CredentialsSchema._id,
+            id: credentials._id,
             message: 'Website added and password generated',
         })
     } catch (error) {
@@ -185,7 +198,10 @@ createCredentials = async (req, res) => {
  */
 decryptPassword = async (req, res) => {
     try {
-        const credentials = await CredentialsSchema.findOne({ website: req.params.website })
+        const credentials = await CredentialsSchema.findOne({
+            website: req.params.website,
+            userId: req.user.id
+        })
 
         if (!credentials) {
             return res.status(404).json({
@@ -226,11 +242,16 @@ decryptPassword = async (req, res) => {
  */
 deleteCredentials = async (req, res) => {
     try {
-        const result = await CredentialsSchema.deleteOne({ website: req.params.website })
+        const result = await CredentialsSchema.deleteOne({
+                website: req.params.website,
+                userId: req.user.id
+            })
+
         if (result.deletedCount === 0) {
             return res.status(404).json({ success: false, error: 'Website not found' })
         }
         return res.status(200).json({ success: true, data: result })
+        
     } catch (err) {
         return res.status(400).json({ success: false, error: err })
     }
@@ -246,9 +267,8 @@ deleteCredentials = async (req, res) => {
  */
 getAllCredentials = async (req, res) => {
     try {
-        const websites = await CredentialsSchema.find({})
+        const websites = await CredentialsSchema.find({ userId: req.user.id })
         
-
         /*
         //leads to page crash
         if (!websites.length) {
@@ -283,11 +303,16 @@ getPasswordByWebsite = async (req, res) => {
     }
 
     try {
-        const credentials = await CredentialsSchema.findOne({ website: req.params.website })
+        const credentials = await CredentialsSchema.findOne({
+            website: req.params.website,
+            userId: req.user.id
+        })
+
         if (!credentials) {
             return res.status(404).json({ success: false, error: 'Website not found' })
         }
         return res.status(200).json({ success: true, data: credentials })
+
     } catch (err) {
         return res.status(400).json({ success: false, error: err })
     }
@@ -322,7 +347,7 @@ updatePassword = async (req, res) => {
 
     try {
         const result = await CredentialsSchema.updateOne(
-            { website },
+            { website, userId: req.user.id },
             { pw: encrypted.pw, iv: encrypted.iv, salt: encrypted.salt }
         )
         if (result.matchedCount === 0) {
@@ -335,6 +360,8 @@ updatePassword = async (req, res) => {
 }
 
 module.exports = {
+    registerUser,
+    loginUser,
     createCredentials,
     decryptPassword,
     getAllCredentials,

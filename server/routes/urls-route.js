@@ -19,15 +19,23 @@
 const express = require('express')
 const UrlController = require('../controllers/urls-controller')
 const router = express.Router()
-//const authMiddleware = require('../middleware/auth-middleware')
+const authMiddleware = require('../middleware/auth-middleware')
 
 /**
- * POST /register
+ * POST /auth/register
  *
  * Register new user
  * 
  */
-//router.post('/register', UrlController.register)
+router.post('/auth/register', UrlController.registerUser)
+
+/**
+ * POST /auth/login
+ *
+ * Login user
+ * 
+ */
+router.post('/auth/login', UrlController.loginUser)
 
 /**
  * POST /credentials
@@ -42,7 +50,7 @@ const router = express.Router()
  *   website: string
  * }
  */
-router.post('/credentials', UrlController.createCredentials)
+router.post('/credentials', authMiddleware, UrlController.createCredentials)
 
 /**
  * GET /credentials
@@ -52,7 +60,7 @@ router.post('/credentials', UrlController.createCredentials)
  * Returns:
  * - Array of login records (encrypted passwords)
  */
-router.get('/credentials', UrlController.getAllCredentials)
+router.get('/credentials', authMiddleware, UrlController.getAllCredentials)
 
 /**
  * GET /credentials/:website
@@ -62,7 +70,7 @@ router.get('/credentials', UrlController.getAllCredentials)
  * Params:
  * - website: string
  */
-router.get('/credentials/:website', UrlController.getPasswordByWebsite)
+router.get('/credentials/:website', authMiddleware, UrlController.getPasswordByWebsite)
 
 /**
  * GET /decrypt/:pw/:iv
@@ -77,7 +85,7 @@ router.get('/credentials/:website', UrlController.getPasswordByWebsite)
  * Returns:
  * - Decrypted plaintext password
  */
-router.get('/decrypt/:website', UrlController.decryptPassword)
+router.get('/decrypt/:website', authMiddleware, UrlController.decryptPassword)
 
 /**
  * PUT /credentials/:website
@@ -90,7 +98,7 @@ router.get('/decrypt/:website', UrlController.decryptPassword)
  *   pw: string
  * }
  */
-router.put('/credentials/:website', UrlController.updatePassword)
+router.put('/credentials/:website', authMiddleware, UrlController.updatePassword)
 
 /**
  * DELETE /credentials/:website
@@ -100,6 +108,6 @@ router.put('/credentials/:website', UrlController.updatePassword)
  * Params:
  * - website: string
  */
-router.delete('/credentials/:website', UrlController.deleteCredentials)
+router.delete('/credentials/:website', authMiddleware, UrlController.deleteCredentials)
 
 module.exports = router

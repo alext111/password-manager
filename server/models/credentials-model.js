@@ -44,7 +44,7 @@ const CredentialsSchema = new Schema(
         pw: { type: String, required: true},
         iv: { type: String, required: true},
         salt: { type: String, required: true},
-        //userId: { type: String, requried: true},
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', requried: true},
     },
     { timestamps: true },
 )

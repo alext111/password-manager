@@ -27,7 +27,12 @@ const passwordGenerator = require('../utils/pw-generator')
 const encryptor = require('../utils/pw-encryption')
 const api = supertest(app)
 const { MongoMemoryServer } = require('mongodb-memory-server')
+const user = require('../models/user-model')
 
+require('dotenv').config({ path: '../.env'})
+
+let token
+let userId
 let mongoServer
 
 /**
@@ -55,18 +60,67 @@ beforeAll(async () => {
 beforeEach(async () => {
   // Clear and seed DB
   await credentialsModel.deleteMany({})
+  await user.deleteMany({})
 
-  const credentialsObject1 = new credentialsModel(helper.initialLoginInfo[0])
-  await credentialsObject1.save()
+  // Create user
+  const newUser = {
+    username: 'testuser',
+    password: 'testpassword'
+  }
 
-  const credentialsObject2 = new credentialsModel(helper.initialLoginInfo[1])
-  await credentialsObject2.save()
+  await api.post('/api/auth/register').send(newUser)
+
+  // Login to get token
+  const loginRes = await api.post('/api/auth/login').send(newUser)
+
+  token = loginRes.body.token
+  userId = loginRes.body.id
+
+  // Seed credentials WITH userId
+  const credentialsInfo1 = new credentialsModel({
+    ...helper.initialLoginInfo[0],
+    userId
+  })
+
+  const credentialsInfo2 = new credentialsModel({
+    ...helper.initialLoginInfo[1],
+    userId
+  })
+
+  await credentialsInfo1.save()
+  await credentialsInfo2.save()
 })
 
 afterAll(async () => {
   await mongoose.connection.dropDatabase()
   await mongoose.connection.close()
   await mongoServer.stop()
+})
+
+/**
+ * Test Group: Authenticate User
+ */
+describe('Authentication', () => {
+	test('Request fails without token', async () => {
+		await api
+			.get('/api/credentials')
+			.expect(401)
+	})
+
+	test('User cannot access another user credentials', async () => {
+		// create second user
+		const user2 = { username: 'user2', password: 'password123' }
+		await api.post('/api/auth/register').send(user2)
+		const login2 = await api.post('/api/auth/login').send(user2)
+
+		const token2 = login2.body.token
+
+		const response = await api
+			.get('/api/credentials')
+			.set('Authorization', `Bearer ${token2}`)
+
+		expect(response.body.data).toHaveLength(0)
+	})
 })
 
 
@@ -80,18 +134,19 @@ describe('Database contains preexisting documents', () => {
 	test('Documents are returned in json format', async () => {
 		await api
 			.get('/api/credentials')
+			.set('Authorization', `Bearer ${token}`)
 			.expect(200)
 			.expect('Content-Type', /application\/json/)
 	})
   
 	test('There are two documents', async () => {
-		const response = await api.get('/api/credentials')
+		const response = await api.get('/api/credentials').set('Authorization', `Bearer ${token}`)
   
 		expect(response.body.data).toHaveLength(2)
 	})
   
 	test('The documents contain correct info', async () => {
-		const response = await api.get('/api/credentials')
+		const response = await api.get('/api/credentials').set('Authorization', `Bearer ${token}`)
 		const passwords = response.body.data.map(response => response.pw)
   
 		expect(passwords).toContain(helper.initialLoginInfo[0].pw)
@@ -113,11 +168,12 @@ describe('Posting new document', () => {
   
 		await api
 			.post('/api/credentials')
+			.set('Authorization', `Bearer ${token}`)
 			.send(newCredentials)
 			.expect(201)
 			.expect('Content-Type', /application\/json/)
   
-		const response = await api.get('/api/credentials')
+		const response = await api.get('/api/credentials').set('Authorization', `Bearer ${token}`)
 		const websites = response.body.data.map(response => response.website)
   
 		expect(websites).toContain('NewWebsite')
@@ -130,6 +186,7 @@ describe('Posting new document', () => {
   
 		await api
 			.post('/api/credentials')
+			.set('Authorization', `Bearer ${token}`)
 			.send(newCredentials)
 			.expect(400)
 	})
@@ -149,6 +206,7 @@ describe('Getting specific document', () => {
   
 		await api
 			.get(`/api/credentials/${findCredentials.website}`)
+			.set('Authorization', `Bearer ${token}`)
 			.send(findCredentials)
 			.expect(200)
 	})
@@ -184,11 +242,13 @@ describe('Changing specific document', () => {
   
 		await api
 			.put(`/api/credentials/${updateCredentials.website}`)
+			.set('Authorization', `Bearer ${token}`)
 			.send(updateCredentials)
 			.expect(200)
   
 		const response = await api
 			.get(`/api/credentials/${updateCredentials.website}`)
+			.set('Authorization', `Bearer ${token}`)
 			.send({website: 'TestWebsite1'})
 			.expect(200)
 
@@ -209,6 +269,7 @@ describe('Changing specific document', () => {
   
 		await api
 			.put(`/api/credentials/${updateCredentials.website}`)
+			.set('Authorization', `Bearer ${token}`)
 			.send(updateCredentials)
 			.expect(404)
 	})
@@ -221,6 +282,7 @@ describe('Changing specific document', () => {
   
 		await api
 			.put(`/api/credentials/${updateCredentials.website}`)
+			.set('Authorization', `Bearer ${token}`)
 			.send(updateCredentials)
 			.expect(400)
 	})
@@ -241,10 +303,11 @@ describe('Deleting specific document', () => {
   
 		await api
 			.delete(`/api/credentials/${deleteCredentials.website}`)
+			.set('Authorization', `Bearer ${token}`)
 			.send(deleteCredentials)
 			.expect(200)
     
-		const response = await api.get('/api/credentials')
+		const response = await api.get('/api/credentials').set('Authorization', `Bearer ${token}`)
 		const websites = response.body.data.map(response => response.website)
   
 		expect(websites).toHaveLength(1)
@@ -257,6 +320,7 @@ describe('Deleting specific document', () => {
   
 		await api
 			.delete(`/api/credentials/${deleteCredentials.website}`)
+			.set('Authorization', `Bearer ${token}`)
 			.send(deleteCredentials)
 			.expect(404)
 	})
@@ -275,6 +339,7 @@ describe('Decrypting password', () => {
 
     const response = await api
       .get(`/api/decrypt/${website}`)
+	  .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -285,12 +350,14 @@ describe('Decrypting password', () => {
   test('Decrypt fails for non-existent website', async () => {
     await api
       .get('/api/decrypt/nonexistent.com')
+	  .set('Authorization', `Bearer ${token}`)
       .expect(404)
   })
 
   test('Decrypt fails for empty website', async () => {
     await api
       .get('/api/decrypt/')
+	  .set('Authorization', `Bearer ${token}`)
       .expect(404)
   })
 })
