@@ -17,6 +17,7 @@ jobs:
 
     env:
       ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
     steps:
     - uses: actions/checkout@v4
