@@ -123,8 +123,8 @@ This application uses JSON Web Token (JWT) authentication to secure API routes a
 
 | Method | Endpoint                     | Description                  | Auth Required |
 |--------|------------------------------|------------------------------|--------------|
-| POST   | /api/register                | Create new user              | No           |
-| POST   | /api/login                   | Login user                   | No           |
+| POST   | /api/auth/register           | Create new user              | No           |
+| POST   | /api/auth/login              | Login user                   | No           |
 | GET    | /api/credentials             | Get all credentials          | Yes          |
 | GET    | /api/credentials/:website    | Get credential by website    | Yes          |
 | POST   | /api/credentials             | Create new credential        | Yes          |
