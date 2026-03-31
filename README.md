@@ -14,6 +14,7 @@ This application is **not a production-ready password manager** and should **not
 It exists to showcase:
 - Full-stack JavaScript development
 - Secure data handling concepts
+- User authentication
 - Testing and CI/CD fundamentals
 - Automated testing
 - Containerization and cloud deployment
@@ -24,9 +25,9 @@ The application allows users to generate, encrypt, store, and retrieve passwords
 Key features include:
 
 - Secure password generation
-- AES-based encryption before storage
-- Encrypted password storage in MongoDB
+- AES-based encryption before storage in MongoDB
 - Full CRUD operations for password entries
+- JWT User authentication
 - REST API architecture
 - Automated frontend and backend testing
 
@@ -81,6 +82,41 @@ Test coverage includes:
 - Password generation logic
 - Encryption functionality
 - Database interactions
+
+
+## Security Features
+- Password hashing using bcrypt
+- JWT authentication
+- Encrypted password storage using AES encryption
+- User-specific credential isolation (users can only access their own data)
+- Protected API routes using authentication middleware
+
+### Authentication (JWT)
+This application uses JSON Web Token (JWT) authentication to secure API routes and associate stored credentials with individual users.
+
+#### Authentication Flow
+1. User Registration
+- User creates an account with username and password
+- Password is hashed using bcrypt
+- User is stored in MongoDB
+  
+2. User Login
+- User submits username and password
+- Password is validated using bcrypt
+- Server generates a JWT token
+- Token is returned to the client
+
+3. Authenticated Requests
+- The JWT token is stored in localStorage
+- The token is sent in the Authorization header for API requests
+
+4. Auth Middleware
+- Backend middleware verifies the JWT
+- If valid, the user ID is attached to the request
+- All credential operations are performed using the authenticated user's ID
+  
+5. Protected Routes
+- Users can only access, update, or delete credentials that belong to their account
 
 
 ## Cloud Deployment (AWS)
