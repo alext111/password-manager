@@ -96,27 +96,27 @@ This application uses JSON Web Token (JWT) authentication to secure API routes a
 
 #### Authentication Flow
 1. User Registration
-- User creates an account with username and password
-- Password is hashed using bcrypt
-- User is stored in MongoDB
+  - User creates an account with username and password
+  - Password is hashed using bcrypt
+  - User is stored in MongoDB
   
 2. User Login
-- User submits username and password
-- Password is validated using bcrypt
-- Server generates a JWT token
-- Token is returned to the client
+  - User submits username and password
+  - Password is validated using bcrypt
+  - Server generates a JWT token
+  - Token is returned to the client
 
 3. Authenticated Requests
-- The JWT token is stored in localStorage
-- The token is sent in the Authorization header for API requests
+  - The JWT token is stored in localStorage
+  - The token is sent in the Authorization header for API requests
 
 4. Auth Middleware
-- Backend middleware verifies the JWT
-- If valid, the user ID is attached to the request
-- All credential operations are performed using the authenticated user's ID
+  - Backend middleware verifies the JWT
+  - If valid, the user ID is attached to the request
+  - All credential operations are performed using the authenticated user's ID
   
 5. Protected Routes
-- Users can only access, update, or delete credentials that belong to their account
+  - Users can only access, update, or delete credentials that belong to their account
 
 
 ## Cloud Deployment (AWS)
