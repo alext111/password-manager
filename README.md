@@ -119,6 +119,21 @@ This application uses JSON Web Token (JWT) authentication to secure API routes a
     - Users can only access, update, or delete credentials that belong to their account
 
 
+## API Endpoints
+
+| Method | Endpoint                     | Description                  | Auth Required |
+|--------|------------------------------|------------------------------|--------------|
+| POST   | /api/auth/register           | Create new user              | No           |
+| POST   | /api/auth/login              | Login user                   | No           |
+| GET    | /api/credentials             | Get all credentials          | Yes          |
+| GET    | /api/credentials/:website    | Get credential by website    | Yes          |
+| POST   | /api/credentials             | Create new credential        | Yes          |
+| PUT    | /api/credentials/:website    | Update credential            | Yes          |
+| DELETE | /api/credentials/:website    | Delete credential            | Yes          |
+| GET    | /api/decrypt/:website        | Decrypt password             | Yes          |
+
+
+
 ## Cloud Deployment (AWS)
 
 The application is deployed on Amazon Web Services (AWS) using an EC2 instance.
