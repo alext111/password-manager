@@ -95,22 +95,25 @@ class Register extends Component {
             <Wrapper>
                 <Title>Register</Title>
 
-                <Label>Username</Label>
+                <Label htmlFor="username">Username</Label>
                 <InputText
+                    id="username"
                     type="text"
                     value={username}
                     onChange={this.handleChangeUsername}
                 />
 
-                <Label>Password</Label>
+                <Label htmlFor="password">Password</Label>
                 <InputText
+                    id="password"
                     type="password"
                     value={password}
                     onChange={this.handleChangePassword}
                 />
 
-                <Label>Confirm Password</Label>
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <InputText
+                    id="confirmPassword"
                     type="password"
                     value={confirmPassword}
                     onChange={this.handleChangeConfirmPassword}

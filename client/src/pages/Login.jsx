@@ -8,11 +8,11 @@ import styled from 'styled-components'
 
 // Styled components
 const Title = styled.h1.attrs({
-    classname: 'h1',
+    className: 'h1',
 })``
 
 const Wrapper = styled.div.attrs({
-    classname: 'form-group',
+    className: 'form-group',
 })`
     margin: 0 30px;
 `
@@ -85,15 +85,17 @@ class Login extends Component {
             <Wrapper>
                 <Title>Login</Title>
 
-                <Label>Username</Label>
+                <Label htmlFor="username">Username</Label>
                 <InputText
+                    id="username"
                     type="text"
                     value={username}
                     onChange={this.handleChangeUsername}
                 />
 
-                <Label>Password</Label>
+                <Label htmlFor="password">Password</Label>
                 <InputText
+                    id="password"
                     type="password"
                     value={password}
                     onChange={this.handleChangePassword}
