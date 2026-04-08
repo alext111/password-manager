@@ -177,8 +177,10 @@ Successful builds trigger deployment to the AWS EC2 instance where the updated a
 
 Create a `.env` file in the server directory:
 
+```env
 JWT_SECRET=your_secret_key
 MONGO_URI=mongodb://localhost:27017/password-manager
+```
 
 For Docker, these are configured in docker-compose.yml.
 
