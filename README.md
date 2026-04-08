@@ -178,6 +178,7 @@ Successful builds trigger deployment to the AWS EC2 instance where the updated a
 Create a `.env` file in the server directory:
 
 ```env
+ENCRYPTION_KEY='your_secret_32_length_char_here_' # Must be 32 characters long
 JWT_SECRET=your_secret_key
 MONGO_URI=mongodb://localhost:27017/password-manager
 ```
