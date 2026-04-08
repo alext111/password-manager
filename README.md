@@ -11,28 +11,23 @@ A full-stack password manager built with the MERN stack (MongoDB, Express, React
 
 This application is **not a production-ready password manager** and should **not be used to store real or sensitive credentials**.
 
-It exists to showcase:
-- Full-stack JavaScript development
-- Secure data handling concepts
-- User authentication
-- Testing and CI/CD fundamentals
-- Automated testing
-- Containerization and cloud deployment
-
 ## Description
 The application allows users to generate, encrypt, store, and retrieve passwords through a web interface.
 
 Key features include:
 
-- Secure password generation
-- AES-based encryption before storage in MongoDB
-- Full CRUD operations for password entries
+- Secure password hashing (bcrypt)
+- AES encryption for stored credentials (with IV + salt)
+- Full CRUD operations
 - JWT User authentication
 - REST API architecture
-- Automated frontend and backend testing
+- Protected API routes
+- CI/CD pipeline with automated testing
+- Dockerized development environment
 
 ## System Architecture
 <img width="1418" height="127" alt="System Architecture" src="https://github.com/user-attachments/assets/62ef1d95-cd3c-4d88-a0c5-44ea8d589cc7" />
+The frontend communicates with a REST API backend, which handles authentication, encryption, and database operations. All sensitive operations are protected via JWT middleware and scoped to the authenticated user.
 
 ## Tech Stack
 
@@ -177,13 +172,53 @@ Successful builds trigger deployment to the AWS EC2 instance where the updated a
 
 
 ## Running the Project Locally
-### Prerequisites
+
+### Environment Variables
+
+Create a `.env` file in the server directory:
+
+JWT_SECRET=your_secret_key
+MONGO_URI=mongodb://localhost:27017/password-manager
+
+For Docker, these are configured in docker-compose.yml.
+
+### Docker Method (Recommended)
+
+#### Prerequisites
+- Docker
+- Docker Compose
+
+#### Run the application
+
+1. Clone the repository
+
+git clone https://github.com/alext111/password-manager.git  
+cd password-manager
+
+2. Build and start containers
+
+docker-compose up --build
+
+3. Access the app
+
+Frontend: http://localhost:3000  
+Backend API: http://localhost:5000
+
+### Stop the application
+
+docker-compose down
+
+### Without Docker
+
+#### Prerequisites
 
 - Node.js
 - MongoDB
 
 MongoDB Community Server can be downloaded here:
 https://www.mongodb.com/try/download/community
+
+
 
 1. Clone the repository
     git clone https://github.com/alext111/password-manager.git
