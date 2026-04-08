@@ -179,8 +179,8 @@ Create a `.env` file in the server directory:
 
 ```env
 ENCRYPTION_KEY='your_secret_32_length_char_here_' # Must be 32 characters long
-JWT_SECRET=your_secret_key
-MONGO_URI=mongodb://localhost:27017/password-manager
+JWT_SECRET='your_secret_key'
+MONGO_URI='mongodb://localhost:27017/password-manager'
 ```
 
 For Docker, these are configured in docker-compose.yml.
