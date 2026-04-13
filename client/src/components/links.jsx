@@ -51,7 +51,7 @@ class Links extends Component {
                                 </Item>
                                 <Item>
                                     <Link to="/credentials/find" className="nav-link">
-                                        Find Password By Url
+                                        Find Password By Website
                                     </Link>
                                 </Item>
                                 <Item>
