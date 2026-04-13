@@ -2,6 +2,9 @@
 
 Deployed at: [https://www.a-tran.dev](https://www.a-tran.dev)
 
+[![codecov](https://codecov.io/github/alext111/password-manager/graph/badge.svg?token=L0JX15ZTEN)](https://codecov.io/github/alext111/password-manager)
+![CI/CD](https://github.com/alext111/password-manager/actions/workflows/ci-cd.yml/badge.svg)
+
 A full-stack password manager built with the MERN stack (MongoDB, Express, React, Node.js) that demonstrates secure credential storage concepts, REST API design, testing, and cloud deployment practices.
 
 ## Live Demo
