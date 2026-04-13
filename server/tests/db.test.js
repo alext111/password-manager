@@ -99,6 +99,8 @@ afterAll(async () => {
 
 /**
  * Test Group: Authenticate User
+ * --------------------------------------------------
+ * Verifies user authentication functionality
  */
 describe('Authentication', () => {
 	test('Request fails without token', async () => {
@@ -152,6 +154,108 @@ describe('Database contains preexisting documents', () => {
 		expect(passwords).toContain(helper.initialLoginInfo[0].pw)
 		expect(passwords).toContain(helper.initialLoginInfo[1].pw)
 	})
+})
+
+/**
+ * Test Group: Registering New User
+ * --------------------------------------------------
+ * Ensures new user can be registered with proper error handling.
+ */
+describe('User Registration', () => {
+
+  test('Fails with missing username', async () => {
+    await api
+      .post('/api/auth/register')
+      .send({ password: 'password123' })
+      .expect(400)
+  })
+
+  test('Fails with missing password', async () => {
+    await api
+      .post('/api/auth/register')
+      .send({ username: 'user1' })
+      .expect(400)
+  })
+
+  test('Fails with short password', async () => {
+    await api
+      .post('/api/auth/register')
+      .send({ username: 'user1', password: '123' })
+      .expect(400)
+  })
+
+  test('Fails with duplicate username', async () => {
+    const newUser = { username: 'duplicateUser', password: 'password123' }
+
+    await api.post('/api/auth/register').send(newUser)
+
+    await api
+      .post('/api/auth/register')
+      .send(newUser)
+      .expect(409)
+  })
+})
+
+/**
+ * Test Group: User Login
+ * --------------------------------------------------
+ * Ensures existing user can login with correct auth token creation and error handling.
+ */
+describe('User Login', () => {
+
+  test('Fails with non-existent user', async () => {
+    await api
+      .post('/api/auth/login')
+      .send({ username: 'nouser', password: 'password123' })
+      .expect(401)
+  })
+
+  test('Fails with incorrect password', async () => {
+    const user = { username: 'loginuser', password: 'password123' }
+
+    await api.post('/api/auth/register').send(user)
+
+    await api
+      .post('/api/auth/login')
+      .send({ username: 'loginuser', password: 'wrongpassword' })
+      .expect(401)
+  })
+
+  test('Login returns a token', async () => {
+    const user = { username: 'tokenuser', password: 'password123' }
+
+    await api.post('/api/auth/register').send(user)
+
+    const res = await api
+      .post('/api/auth/login')
+      .send(user)
+      .expect(200)
+
+    expect(res.body.token).toBeDefined()
+    expect(typeof res.body.token).toBe('string')
+  })
+})
+
+/**
+ * Test Group: Authentication Edge Cases
+ * --------------------------------------------------
+ * Verifies handling of incorrect authentication tokens.
+ */
+describe('Authentication edge cases', () => {
+
+  test('Fails with malformed token', async () => {
+    await api
+      .get('/api/credentials')
+      .set('Authorization', 'Bearer invalidtoken')
+      .expect(401)
+  })
+
+  test('Fails with missing Bearer prefix', async () => {
+    await api
+      .get('/api/credentials')
+      .set('Authorization', token)
+      .expect(401)
+  })
 })
 
 /**
@@ -209,6 +313,13 @@ describe('Getting specific document', () => {
 			.set('Authorization', `Bearer ${token}`)
 			.send(findCredentials)
 			.expect(200)
+	})
+
+	test('Fails when website does not exist', async () => {
+		await api
+			.get('/api/credentials/nonexistent')
+			.set('Authorization', `Bearer ${token}`)
+			.expect(404)
 	})
 
 	/*
@@ -286,6 +397,14 @@ describe('Changing specific document', () => {
 			.send(updateCredentials)
 			.expect(400)
 	})
+
+	test('Fails when website does not exist', async () => {
+		await api
+			.put('/api/credentials/nonexistent')
+			.set('Authorization', `Bearer ${token}`)
+			.send({ website: 'nonexistent', pw: 'newpass' })
+			.expect(404)
+	})
 })
 
 /**
@@ -322,6 +441,13 @@ describe('Deleting specific document', () => {
 			.delete(`/api/credentials/${deleteCredentials.website}`)
 			.set('Authorization', `Bearer ${token}`)
 			.send(deleteCredentials)
+			.expect(404)
+	})
+
+	test('Fails when deleting non-existent website', async () => {
+		await api
+			.delete('/api/credentials/nonexistent')
+			.set('Authorization', `Bearer ${token}`)
 			.expect(404)
 	})
 })
