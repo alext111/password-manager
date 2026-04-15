@@ -12,6 +12,9 @@ out/
 # Test output
 server/coverage
 client/coverage
+client/cypress/videos
+client/cypress/screenshots
+client/cypress/downloads
 
 # Environment variables (secrets)
 .env
