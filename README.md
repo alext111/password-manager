@@ -62,9 +62,9 @@ Responsibilities:
 - AES encryption and decryption
 - Database persistence
 
-### Testing
+## Testing
 
-- Jest
+### Unit Tests (Jest)
 
 #### Frontend
 Test coverage includes:
@@ -81,6 +81,19 @@ Test coverage includes:
 - Encryption functionality
 - Database interactions
 
+### End-to-End Tests (Cypress)
+
+E2E tests validate complete user flows through the browser against a running instance of the application.
+
+#### Flows covered
+
+- User registration (valid, duplicate username, mismatched passwords)
+- Login and logout
+- Create a credential
+- Find all credentials
+- Find a credential by website
+- Update a credential
+- Delete a credential
 
 ## Security Features
 - Password hashing using bcrypt
